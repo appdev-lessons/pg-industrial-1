@@ -1,4 +1,4 @@
-# Photogram Industrial Part 1: Devise accounts and photos scaffold
+# Photogram Industrial: Devise accounts and photos scaffold
 
 ## Getting started
 

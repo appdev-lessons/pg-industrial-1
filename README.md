@@ -1,5 +1,5 @@
-# photogram-industrial-part-1
+# pg-industrial-1
 
-https://learn.firstdraft.com/lessons/197-photogram-industrial-part-1
+https://firstdraft.com/lessons/837-pg-industrial-1
 
 All rights reserved — see [LICENSE.txt](LICENSE.txt)

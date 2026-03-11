@@ -6,40 +6,38 @@ This project includes automated tests, so click on this button to get started:
 
 LTI{Load Photogram Industrial assignment}(https://grades.firstdraft.com/launch)[S9ymPy6WCsn18gLbByVbZQ7k]{vfdtzJb5bLYqYwuqgeRKpc5d}(10)[Photogram Industrial Project]
 
-The current project, `photogram-industrial`, covers everything in this lesson and the next three lessons: _Photogram Industrial Parts 2, 3, and 4_. Keep the project open when you move on to those lessons in order to build on your progress through the series.
+The current project, `pg-industrial`, spans over several of the next lessons. Keep the codespace open when you move on to those lessons in order to build on your progress through the series.
 
 <div class="alert alert-danger">
 
 You will need to go all the way through the lesson series and implement everything to get the `grade` tests to pass, which all start out failing. **None of the tests will even run until you add all of the models in the first two parts in this series.**
 
 So, don't panic if you see an error message in Grades about tests not being run prior to adding your User, Photo, Like, Comment, and FollowRequest models in the next lesson.
-
-**This first part does not contain a video guide.** Please follow along closely with the written text.
 </div>
 
-Here is a rough target to work towards:
+Here is the target that we will work towards:
 
-[photogram-industrial.matchthetarget.com](https://photogram-industrial.matchthetarget.com/).
+[pg-industrial.matchthetarget.com](https://pg-industrial.matchthetarget.com/).
 
 This time around, Photogram will be _industrial grade_ — the kind of code you could charge money for. We'll use database indexes and constraints, advanced association accessors, scopes, validations, view helper methods like `link_to` and `form_with` everywhere, partials to DRY up code judiciously, the Devise gem for authentication and password reset emails, Active Storage for real image uploads, and many other industrial-strength upgrades.
 
 This is like finishing school. We're going to learn how to level up to write a codebase that we can onboard professional developers to.
 
-Launch the codespace for your forked project and get the live preview running with `bin/dev`.
+Launch the codespace for your forked project and get the live preview running with `bin/server`.
 
-Also, go to the settings of your forked repository on `github.com/YOUR_USERNAME/photogram-industrial` and add your instructors as collaborators ("Settings" tab, then "Manage Access").
+Also, go to the settings of your forked repository on `github.com/YOUR_USERNAME/pg-industrial` and add your instructors as collaborators ("Settings" tab, then "Manage Access").
 
 We're going to start leaving feedback for you in the form of comments on your pull requests. You're going to start adopting the professional git workflow, where you submit pull requests for your branches, and receive line-by-line comments on your code.
 
-[Here is a cheat sheet for our git workflow.](https://learn.firstdraft.com/lessons/196-git-cli)
+[Here is a cheat sheet for our git workflow.](/lessons/196-git-cli)
 
 We're going to practice the workflow for each feature that we're working on of creating a branch, committing to it, and merging it back to `main`.
 
 To remind you, here is the data model from Photogram:
 
-![](/assets/pg-erd.png)
+![Photogram ERD](/assets/erd.png)
 
-Importantly, there's the `FollowRequest` table, which keeps track of who's following whom. We have a status column in the `FollowRequest` because this is going to be a permissioned social network. When somebody sends a `FollowRequest`, we're going to start it off as "pending", and the recipient of that request has to update that to "accept" it before the follower can actually see their posts.
+Importantly, there's the `FollowRequest` table, which keeps track of who's following whom. We have a status column in the `FollowRequest` because this is going to be a permissioned social network. When somebody sends a `FollowRequest`, we're going to start it off as "pending" and the recipient of that request has to update that to "accept" it before the follower can actually see their posts.
 
 ## User accounts with Devise
 
@@ -70,7 +68,7 @@ These are things like our `better_errors` page for debugging, `annotaterb` to ad
 
 With the `gem "devise"` line added _outside_ of any group, we can go to a terminal tab and run the usual commands to install gems and Devise.
 
-(Consider [clearing your terminal](https://learn.firstdraft.com/lessons/31#clear-terminal) before you run any of these commands to clear old output, so you can clearly see any instructions or error messages when the command runs.)
+(Consider [clearing your terminal](/lessons/31#clear-terminal) before you run any of these commands to clear old output, so you can clearly see any instructions or error messages when the command runs.)
 
 ```
 bundle install

@@ -692,29 +692,6 @@ git add -A
 git commit -m "Edited Photos migration and configured Photo model"
 ```
 
-## About the sample data
-
-The starting point includes a pre-written `sample_data` rake task at `lib/tasks/dev.rake`. You don't need to write it; it's already done. Here's what it does at a high level:
-
-- Creates 10 users (Alice through Jack) with emails like `alice@example.com` and the password `appdev`
-- Makes some users private (Bob, Carol, Eve, Ivy)
-- Attaches specific avatar images from Cloudinary to each user
-- Gives Alice a profile banner image
-- Creates follow relationships between users (some accepted, some pending)
-- Creates 3 photos per user with philosophical captions
-- Creates likes and comments from followers
-- Uses `User.skip_callback(:create, :before, :set_default_avatar)` to bypass the default avatar callback, since it manually attaches specific avatars for each user
-
-<div class="alert alert-info">
-
-**Important:** `rake sample_data` won't run successfully until the next lesson, when all five models (User, Photo, Like, Comment, FollowRequest) are in place. After completing this lesson, you can still test things by signing up through the browser at `/users/sign_up`, or by creating a user in the Rails console:
-
-```
-rails console
-User.create(username: "alice", email: "alice@example.com", password: "appdev")
-```
-</div>
-
 ## Verify your progress
 
 At this point, you should have:
@@ -725,21 +702,29 @@ At this point, you should have:
 4. Devise installed with `devise_for :users` in your routes
 5. A `users` table with citext columns, defaults, and indexes
 6. A `photos` table with proper foreign key, defaults, and indexes
-7. User and Photo models with associations, validations, and scopes
+7. A full `photos` scaffold including a controller and view templates folder.
+8. User and Photo models with associations, validations, and scopes
 
 Try starting your server with `bin/server` and visiting `/users/sign_up`. You should be able to create a new account. If everything is configured correctly, the new user will automatically get a default avatar image uploaded to Cloudinary.
 
 If you can sign up and sign in, you're in great shape. The views won't look like much yet. We'll build those out in later parts.
 
-Now would be a good time for a final commit and push:
+<div class="alert alert-danger">
+
+The `rake sample_data` and `grade` commands **will not work yet**. You'll be able to get sample data and start earning points later as you continue through the lesson series.
+
+Recall: `grade` is just a wrapper for the professional command: `rspec`. Try to run `rspec` in the terminal to see _why_ the specs contained in the `spec/` folder are still broken (`grade` hides all of the useful debugging details). We'll get them all passing soon enough!
+</div>
+
+## Push the branch
+
+If you find any edits, you can make another commit now. If everything looks good, let's finally push our Git branch from our codespace work environment to our GitHub repository with the command:
 
 ```
-git add -A
-git commit -m "Completed User and Photo models"
-git push -u origin HEAD
+git push
 ```
 
-In the next part, we'll generate the remaining models (Likes, Comments, and FollowRequests) and wire up all the associations between them.
+Pushed for safekeeping? Good! Let's continue building Photogram Industrial in the next lesson.
 
 ---
 

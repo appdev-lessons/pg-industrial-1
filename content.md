@@ -21,9 +21,9 @@ Here is the target that we will work towards:
 
 This time around, Photogram will be _industrial grade_ — the kind of code you could charge money for. We'll use database indexes and constraints, advanced association accessors, scopes, validations, view helper methods like `link_to` and `form_with` everywhere, partials to DRY up code judiciously, the Devise gem for authentication and password reset emails, Active Storage for real image uploads via Cloudinary, and many other industrial-strength upgrades.
 
-This is like finishing school. We're going to learn how to level up to write a codebase that we can onboard professional developers to.
+This is like finishing school. We're going to learn how to level up to write a codebase that we can onboard professional developers to; and which LLMs can make quick sense of based on their professional code training data.
 
-Launch the codespace for your forked project and get the live preview running with `bin/server`.
+Launch the codespace for your forked project and get the live preview running with `bin/server`. You'll see we're starting from scratch.
 
 ## The data model
 
@@ -31,9 +31,9 @@ Before we dive into code, let's look at the full data model we're building towar
 
 ![Photogram ERD](/assets/pg-erd.png)
 
-We have five tables: Users, Photos, Comments, Likes, and FollowRequests. In this first lesson, we'll focus on the **Users** and **Photos** tables. Parts 2 through 4 will cover the remaining tables and build out the views.
+We have five tables: Users, Photos, Comments, Likes, and FollowRequests (and an additional table `ActiveStorage` related to image uploads). In this first lesson, we'll focus on the **Users** and **Photos** tables.
 
-Importantly, there's the `FollowRequest` table, which keeps track of who's following whom. We have a `status` column in `FollowRequest` because this is going to be a permissioned social network. When somebody sends a follow request, it starts as "pending", and the recipient has to accept it before the follower can see their posts. But we'll get to that in Part 2.
+Importantly, there's the `FollowRequest` table, which keeps track of who's following whom. We have a `status` column in `FollowRequest` because this is going to be a permissioned social network. When somebody sends a follow request, it starts as "pending," and the recipient has to accept it before the follower can see their posts.
 
 ## Git workflow
 
@@ -77,7 +77,7 @@ Now would be a good time for a commit:
 
 ```
 git add -A
-git commit -m "added required gems to Gemfile"
+git commit -m "Added required gems to Gemfile"
 ```
 
 ## Setting up Cloudinary
@@ -160,7 +160,7 @@ Now would be a good time for a commit:
 
 ```
 git add -A
-git commit -m "configured Cloudinary for image uploads"
+git commit -m "Configured Cloudinary for image uploads"
 ```
 
 ## Installing Active Storage
@@ -185,7 +185,7 @@ And commit:
 
 ```
 git add -A
-git commit -m "installed Active Storage"
+git commit -m "Installed Active Storage"
 ```
 
 ## Installing Devise
@@ -216,7 +216,7 @@ Now would be a good time for a commit:
 
 ```
 git add -A
-git commit -m "installed Devise and added root route"
+git commit -m "Installed Devise and added root route"
 ```
 
 ## Generating the User model with Devise
@@ -238,7 +238,7 @@ Let's commit the generated files before we start editing:
 
 ```
 git add -A
-git commit -m "generated User model with Devise"
+git commit -m "Generated User model with Devise"
 ```
 
 ## Editing the Users migration
@@ -362,7 +362,7 @@ And commit:
 
 ```
 git add -A
-git commit -m "edited and migrated Users table with citext, defaults, and indexes"
+git commit -m "Edited and migrated Users table with citext, defaults, and indexes"
 ```
 
 ## Configuring ApplicationRecord
@@ -382,7 +382,7 @@ end
 
 ## Configuring the User model
 
-Open `app/models/user.rb`. Devise already generated some code for us. We're going to add Active Storage attachments, an association, validations, and a callback. Here's the full file for Part 1:
+Open `app/models/user.rb`. Devise already generated some code for us. We're going to add Active Storage attachments, an association, validations, and a callback. Here's the full file:
 
 ```ruby{7-8,10,12-18,20,22-28}
 class User < ApplicationRecord
@@ -484,7 +484,7 @@ Now would be a good time for a commit:
 
 ```
 git add -A
-git commit -m "configured ApplicationRecord and User model"
+git commit -m "Configured ApplicationRecord and User model"
 ```
 
 ## Generating the Photos scaffold
@@ -506,7 +506,7 @@ Let's commit the generated files before editing:
 
 ```
 git add -A
-git commit -m "generated Photos scaffold"
+git commit -m "Generated Photos scaffold"
 ```
 
 ## Editing the Photos migration
@@ -622,7 +622,7 @@ Now would be a good time for a commit:
 
 ```
 git add -A
-git commit -m "edited Photos migration and configured Photo model"
+git commit -m "Edited Photos migration and configured Photo model"
 ```
 
 ## About the sample data
@@ -640,7 +640,7 @@ The starting point includes a pre-written `sample_data` rake task at `lib/tasks/
 
 <div class="alert alert-info">
 
-**Important:** `rake sample_data` won't run successfully until Part 2, when all five models (User, Photo, Like, Comment, FollowRequest) are in place. After completing Part 1, you can still test things by signing up through the browser at `/users/sign_up`, or by creating a user in the Rails console:
+**Important:** `rake sample_data` won't run successfully until the next lesson, when all five models (User, Photo, Like, Comment, FollowRequest) are in place. After completing this lesson, you can still test things by signing up through the browser at `/users/sign_up`, or by creating a user in the Rails console:
 
 ```
 rails console
@@ -668,7 +668,7 @@ Now would be a good time for a final commit and push:
 
 ```
 git add -A
-git commit -m "completed Part 1: User and Photo models"
+git commit -m "Completed User and Photo models"
 git push -u origin HEAD
 ```
 

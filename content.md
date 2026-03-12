@@ -579,7 +579,7 @@ The generator created:
 
 But `foreign_key: true` tells the database to look for a table called `owners`, which doesn't exist! Our table is `users`. We fix this by specifying the target table explicitly:
 
-```ruby{4:(9-18,54-73)}
+```ruby{3:(9-18,54-73)}
       # ...
       t.text :caption
       t.belongs_to :owner, null: false, foreign_key: { to_table: :users }

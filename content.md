@@ -37,12 +37,12 @@ Importantly, there's the `FollowRequest` table, which keeps track of who's follo
 
 ## Git workflow
 
-We're going to practice the professional git workflow of creating branches, committing to them, and merging back to `main`. Your instructors will leave feedback in the form of comments on your pull requests — line-by-line comments on your actual code.
+We're going to practice the professional git workflow of creating branches, committing to them, and merging back to `main`. That way, we can leave feedback in the form of comments on your pull requests — line-by-line comments on your actual code.
 
-Let's create our first branch now (replace `<your-initials>` with your actual initials, e.g. `rb-create-database`):
+Let's create our first branch now in the terminal:
 
 ```
-git checkout -b <your-initials>-create-database
+git checkout -b create-database
 ```
 
 We'll work on this branch for the rest of the lesson.

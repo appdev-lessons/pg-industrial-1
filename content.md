@@ -295,9 +295,9 @@ rails g devise User username display_name avatar_image profile_banner bio websit
 As a reminder: `g` is short for `generate`, and I dropped `:string` after `username`, `display_name`, etc. because `string` is the default datatype.
 
 This command does several things:
-- Creates a migration file in `db/migrate/`
-- Creates `app/models/user.rb` with Devise modules configured
-- Adds `devise_for :users` to `config/routes.rb`, which gives us routes like `/users/sign_in`, `/users/sign_up`, `/users/sign_out`, and more
+- Creates a migration file in `db/migrate/`.
+- Creates `app/models/user.rb` with Devise modules configured.
+- Adds `devise_for :users` to `config/routes.rb`, which gives us routes like `/users/sign_in`, `/users/sign_up`, `/users/sign_out`, and more.
 
 Let's commit the generated files before we start editing:
 
@@ -561,11 +561,11 @@ rails generate scaffold Photo image caption:text owner:references pinned:boolean
 {: copyable }
 
 Notice that we used `owner:references` instead of `owner_id:integer`. The `references` type does several things for us:
-- Creates the column as `owner_id` (following Rails conventions)
-- Adds `null: false` by default
-- Adds a database index on the column
-- Adds a `belongs_to :owner` association in the model
-- Adds a foreign key constraint in the migration
+- Creates the column as `owner_id` (following Rails conventions).
+- Adds `null: false` by default.
+- Adds a database index on the column.
+- Adds a `belongs_to :owner` association in the model.
+- Adds a foreign key constraint in the migration.
 
 Let's commit the generated files before editing:
 
@@ -714,14 +714,14 @@ git commit -m "Edited Photos migration and configured Photo model"
 
 At this point, you should have:
 
-1. All gems installed
-2. Cloudinary configured with your API credentials
-3. Active Storage installed and pointed at Cloudinary
-4. Devise installed with `devise_for :users` in your routes
-5. A `users` table with citext columns, defaults, and indexes
-6. A `photos` table with proper foreign key, defaults, and indexes
+1. All gems installed.
+2. Cloudinary configured with your API credentials.
+3. Active Storage installed and pointed at Cloudinary.
+4. Devise installed with `devise_for :users` in your routes.
+5. A `users` table with citext columns, defaults, and indexes.
+6. A `photos` table with proper foreign key, defaults, and indexes.
 7. A full `photos` scaffold including a controller and view templates folder.
-8. User and Photo models with associations, validations, and scopes
+8. User and Photo models with associations, validations, and scopes.
 
 We'll need to make some more progress on the database and backend setup before we can begin working on the frontend, but we've gotten a lot done!
 

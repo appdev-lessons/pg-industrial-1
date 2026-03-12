@@ -80,6 +80,8 @@ git add -A
 git commit -m "Added required gems to Gemfile"
 ```
 
+[See my commit for this step.](https://github.com/bpurinton/pg-industrial/commit/a858fd108027be86bebb9b61c175008c4959ccbb)
+
 ## Setting up Cloudinary
 
 In previous projects, we might have stored uploaded images locally in the `public/` folder. That works fine in development for a few images, but when you're handling lots of images (like in Photogram), or when you deploy to production via a service like Render, the `public/` folder won't work. We need a cloud storage service, and we'll use Cloudinary.
@@ -204,6 +206,8 @@ git add -A
 git commit -m "Configured Cloudinary for image uploads"
 ```
 
+[See my commit for this step.](https://github.com/bpurinton/pg-industrial/commit/20600eb0e979497d2d0f293b3ac3c49ebed6f360)
+
 ## Installing Active Storage
 
 Active Storage is a built-in Rails framework for uploading files and attaching them to Active Record models. Unlike the old approach of storing filenames as strings in database columns, Active Storage uses its own set of tables to track file attachments.
@@ -228,6 +232,8 @@ And commit:
 git add -A
 git commit -m "Installed Active Storage"
 ```
+
+[See my commit for this step.](https://github.com/bpurinton/pg-industrial/commit/73d8c6cd7440510b2ba419bfd7aea18a4c4f61e4)
 
 ## Installing Devise
 
@@ -275,6 +281,8 @@ git add -A
 git commit -m "Installed Devise and added root route"
 ```
 
+[See my commit for this step.](https://github.com/bpurinton/pg-industrial/commit/93313b536124d55eca3b6b93684581d5f59dc5b1)
+
 ## Generating the User model with Devise
 
 Instead of using the standard `rails generate model` command, we use Devise's generator. This gives us authentication columns (email, encrypted_password, etc.) for free, plus any custom columns we specify. Use the copy button the left side to make sure you get this generator command without any typos:
@@ -297,6 +305,8 @@ Let's commit the generated files before we start editing:
 git add -A
 git commit -m "Generated User model with Devise"
 ```
+
+[See my commit for this step.](https://github.com/bpurinton/pg-industrial/commit/aa3de34ab0fa30f7f6e75005e9ae01b3e52c8f12)
 
 ## Editing the Users migration
 
@@ -399,6 +409,8 @@ And commit:
 git add -A
 git commit -m "Edited and migrated Users table with citext, defaults, and indexes"
 ```
+
+[See my commit for this step.](https://github.com/bpurinton/pg-industrial/commit/39a8b7ce6866ef554647b075b15433223d832d4e)
 
 ## Configuring ApplicationRecord
 
@@ -537,6 +549,8 @@ git add -A
 git commit -m "Configured ApplicationRecord and User model"
 ```
 
+[See my commit for this step.](https://github.com/bpurinton/pg-industrial/commit/f4336d5a8ca4634e4ef615c784d025d803e679d9)
+
 ## Generating the Photos scaffold
 
 Now let's generate the Photos resource. Since users will be creating, viewing, editing, and deleting photos, we want a full scaffold. Use the copy button to avoid typos here:
@@ -559,6 +573,8 @@ Let's commit the generated files before editing:
 git add -A
 git commit -m "Generated Photos scaffold"
 ```
+
+[See my commit for this step.](https://github.com/bpurinton/pg-industrial/commit/1721b36214941330bcaad520850fcd13769d05cd)
 
 ## Editing the Photos migration
 
@@ -691,6 +707,8 @@ Now would be a good time for a commit:
 git add -A
 git commit -m "Edited Photos migration and configured Photo model"
 ```
+
+[See my commit for this step.](https://github.com/bpurinton/pg-industrial/commit/34c77519374e0b5a3e9cd6712275a78ace0ae69b)
 
 ## Verify your progress
 

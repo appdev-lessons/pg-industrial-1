@@ -618,7 +618,7 @@ rails db:migrate
 
 ## Configuring the Photo model
 
-Open `app/models/photo.rb`. The generator gave us a `belongs_to :owner`, but it doesn't know that `owner` refers to the `User` model. Let's walk through each change.
+Open `app/models/photo.rb`. Let's walk through each change.
 
 ### Active Storage for images
 
@@ -628,8 +628,8 @@ Add the Active Storage declaration at the top of the class:
 class Photo < ApplicationRecord
   has_one_attached :image, dependent: :purge_later
 
-  belongs_to :owner, class_name: "User", counter_cache: true
-  # ...
+  belongs_to :owner
+end
 ```
 {: filename="app/models/photo.rb" }
 
@@ -637,14 +637,16 @@ Just like with the User's avatar, we declare that a Photo has an attached image 
 
 ### The belongs_to association
 
+The generator gave us a `belongs_to :owner`, but it doesn't know that `owner` refers to the `User` model. 
+
 Update the generated `belongs_to` to specify the class name and counter cache:
 
-```ruby{3:(24-56)}
-  # ...
+```ruby{4:(20-60)}
+class Photo < ApplicationRecord
   has_one_attached :image, dependent: :purge_later
 
   belongs_to :owner, class_name: "User", counter_cache: true
-  # ...
+end
 ```
 {: filename="app/models/photo.rb" }
 

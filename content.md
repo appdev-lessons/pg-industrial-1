@@ -528,6 +528,8 @@ end
 
 The `before_create` callback runs just before a new user record is saved for the first time. It downloads a default avatar image from our First Draft Cloudinary account and attaches it to the user. This way, every user starts with a profile picture rather than a broken image link.
 
+If you're unfamiliar with callbacks, I strongly recommend quickly skimming [the official Rails guide on them](https://guides.rubyonrails.org/active_record_callbacks.html).
+
 Now would be a good time for a commit:
 
 ```

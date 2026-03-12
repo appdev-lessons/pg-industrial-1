@@ -404,7 +404,7 @@ git commit -m "Edited and migrated Users table with citext, defaults, and indexe
 
 Before we configure the User model, let's add `strip_attributes` to `ApplicationRecord` so that _every_ model in our app benefits from it:
 
-```ruby{3}
+```ruby{4}
 class ApplicationRecord < ActiveRecord::Base
   primary_abstract_class
 
@@ -413,7 +413,7 @@ end
 ```
 {: filename="app/models/application_record.rb" }
 
-`strip_attributes` automatically removes leading and trailing whitespace from all string attributes before saving. This prevents issues like a user accidentally signing up with `" alice "` as their username. Since we put it in `ApplicationRecord`, every model that inherits from it (which is all of them) gets this behavior for free.
+We previously added `gem "strip_attributes"` to our `Gemfile`, so we now have the `strip_attributes` method available throughout the codebase. This method automatically removes leading and trailing whitespace from all string attributes before saving. This prevents issues like a user accidentally signing up with `" alice "` as their username. Since we put it in `ApplicationRecord`, every model that inherits from it (which is all of them) gets this behavior for free.
 
 ## Configuring the User model
 

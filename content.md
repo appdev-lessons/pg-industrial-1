@@ -423,31 +423,40 @@ Open `app/models/user.rb`. Devise already generated some code for us. We're goin
 
 Add the Active Storage attachment declarations after the Devise configuration:
 
-```ruby{4-5}
-  # ...
+```ruby{6,8,16-17}
+# == Schema Information
+#
+# Table name: users
+#
+#  id                     :bigint           not null, primary key
+#  avatar_image           :string
+#  ...
+#  profile_banner         :string
+# ...
+class User < ApplicationRecord
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
   has_one_attached :avatar_image, dependent: :purge_later
   has_one_attached :profile_banner, dependent: :purge_later
-  # ...
+end
 ```
 {: filename="app/models/user.rb" }
 
-These declarations tell Active Storage that a User can have an avatar image and a profile banner attached. The `dependent: :purge_later` option means that when a user is deleted, their attached images will be cleaned up from Cloudinary in a background job.
-
-Notice that `avatar_image` and `profile_banner` are **string columns** in our migration. That might seem odd since we're using Active Storage. The string columns are there for the sample data task, which stores Cloudinary URLs directly. Active Storage uses its own `active_storage_attachments` table to link records to uploaded files.
+These declarations tell Active Storage that a User can have an avatar image and a profile banner attached in the `avatar_image` and `profile_banner` columns that we prepared. The `dependent: :purge_later` option means that when a user is deleted, their attached images will be automatically cleaned up in a background job.
 
 ### The association
 
 Next, add the association for photos:
 
-```ruby{3}
+```ruby{4}
   # ...
   has_one_attached :profile_banner, dependent: :purge_later
 
   has_many :own_photos, foreign_key: :owner_id, class_name: "Photo", dependent: :destroy
-  # ...
+end
 ```
 {: filename="app/models/user.rb" }
 

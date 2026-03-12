@@ -723,9 +723,7 @@ At this point, you should have:
 7. A full `photos` scaffold including a controller and view templates folder.
 8. User and Photo models with associations, validations, and scopes
 
-Try starting your server with `bin/server` and visiting `/users/sign_up`. You should be able to create a new account. If everything is configured correctly, the new user will automatically get a default avatar image uploaded to Cloudinary.
-
-If you can sign up and sign in, you're in great shape. The views won't look like much yet. We'll build those out in later parts.
+We'll need to make some more progress on the database and backend setup before we can begin working on the frontend, but we've gotten a lot done!
 
 <div class="alert alert-danger">
 

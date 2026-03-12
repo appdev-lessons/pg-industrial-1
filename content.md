@@ -130,16 +130,53 @@ We use `ENV.fetch` instead of `ENV[]` because `fetch` will raise a helpful error
 
 ### Configure storage.yml
 
-Open `config/storage.yml`. You should see a commented-out section for Cloudinary. Uncomment it so it looks like this:
+Open `config/storage.yml`. You should see a commented-out section for Cloudinary:
 
-```yaml
-cloudinary:
+```yaml{7-10}
+# ...
+
+local:
+  service: Disk
+  root: <%= Rails.root.join("storage") %>
+
+# Uncomment and change the folder name when you set up Cloudinary
+# cloudinary:
+#   service: Cloudinary
+#   folder: appdev_2
+
+# Leave this alone — serves sample_data images from the First Draft AppDev-2 Cloudinary account
+cloudinary_sample_data:
   service: Cloudinary
-  folder: appdev_2
+  cloud_name: dzhwwlb9e
+
+# ...
 ```
 {: filename="config/storage.yml" }
 
-There's also a `cloudinary_sample_data` section in the file — leave that as-is. It's used by the sample data task.
+ Uncomment it and update the folder name so it looks like this:
+
+```yaml{8-10}
+# ...
+
+local:
+  service: Disk
+  root: <%= Rails.root.join("storage") %>
+
+# Uncomment and change the folder name when you set up Cloudinary
+cloudinary:
+  service: Cloudinary
+  folder: photogram
+
+# Leave this alone — serves sample_data images from the First Draft AppDev-2 Cloudinary account
+cloudinary_sample_data:
+  service: Cloudinary
+  cloud_name: dzhwwlb9e
+
+# ...
+```
+{: filename="config/storage.yml" }
+
+There's also a `cloudinary_sample_data` section in the file — leave that as-is. It will be used by the sample data task.
 
 ### Point Active Storage to Cloudinary
 

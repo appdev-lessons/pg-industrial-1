@@ -239,7 +239,7 @@ First, run the Devise installer:
 rails generate devise:install
 ```
 
-The installer prints a list of manual setup steps in the terminal. One of them is defining a root route. We don't have any resources yet, but we know that `users#feed` will be our homepage eventually. Let's add it now:
+The installer prints a list of manual setup steps in the terminal. We don't need to do all of them now. One that we should do is defining a root route. We don't have any resources yet, but we know that `users#feed` will be our homepage eventually. Let's add it now:
 
 ```ruby{4}
 Rails.application.routes.draw do
@@ -256,6 +256,17 @@ We hadn't seen it before, but the `"/up"` route comes out-of-the-box with any mo
 </aside>
 
 This will cause an error if we visit the root URL right now (since we don't have a `UsersController` yet), but that's fine — we'll build it in a later lesson.
+
+The other thing we should do now is double check this setting in our `development.rb` file:
+
+```rb{}
+config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+```
+{: filename="config/environments/development.rb"}
+
+Development email configuration should already be setup, but check the file and confirm.
+
+We won't worry about flash messages or view templates for now (items 3 and 4). We'll get to those later.
 
 Now would be a good time for a commit:
 

@@ -539,11 +539,12 @@ git commit -m "Configured ApplicationRecord and User model"
 
 ## Generating the Photos scaffold
 
-Now let's generate the Photos resource. Since users will be creating, viewing, editing, and deleting photos, we want a full scaffold:
+Now let's generate the Photos resource. Since users will be creating, viewing, editing, and deleting photos, we want a full scaffold. Use the copy button to avoid typos here:
 
 ```
-rails generate scaffold photo image caption:text owner:references pinned:boolean comments_count:integer likes_count:integer
+rails generate scaffold Photo image caption:text owner:references pinned:boolean comments_count:integer likes_count:integer
 ```
+{: copyable }
 
 Notice that we used `owner:references` instead of `owner_id:integer`. The `references` type does several things for us:
 - Creates the column as `owner_id` (following Rails conventions)

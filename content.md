@@ -724,6 +724,25 @@ If you find any edits, you can make another commit now. If everything looks good
 git push
 ```
 
+Oh no! An error:
+
+```
+fatal: The current branch create-database has no upstream branch.
+To push the current branch and set the remote as upstream, use
+
+    git push --set-upstream origin create-database
+```
+
+It turns out the first time we push a branch, we need to run this full command at the terminal:
+
+```
+git push --set-upstream origin create-database
+```
+
+Run that command to publish the branch to GitHub. Now we'll just be able to run `git push` on any further commits to the `create-database` branch.
+
+If it worked, you should be able to navigate to `github.com/YOUR-USERNAME/pg-industrial` and find both the `main` and `create-database` branch in the branches dropdown.
+
 Pushed for safekeeping? Good! Let's continue building Photogram Industrial in the next lesson.
 
 ---

@@ -466,7 +466,7 @@ We're calling the association `own_photos` (not just `photos`) because a user mi
 
 Add the username validation:
 
-```ruby{3-8}
+```ruby{4-10}
   # ...
   has_many :own_photos, foreign_key: :owner_id, class_name: "Photo", dependent: :destroy
 
@@ -477,11 +477,16 @@ Add the username validation:
       with: /\A[\w_\.]+\z/i,
       message: "can only contain letters, numbers, periods, and underscores"
     }
-  # ...
+end
 ```
 {: filename="app/models/user.rb" }
 
-We require a username, enforce uniqueness (at the Rails level, on top of our database constraint), and restrict the format to letters, numbers, periods, and underscores, just like Instagram. The regex `\A[\w_\.]+\z` means: from the start of the string (`\A`), one or more word characters, underscores, or periods (`[\w_\.]+`), to the end of the string (`\z`).
+We require a username, enforce uniqueness (at the Rails level, on top of our database constraint), and restrict the format to letters, numbers, periods, and underscores, just like Instagram. The regex `\A[\w_\.]+\z` means: from the start of the string (`\A`), one or more (`[]+`): word characters (`\w`), underscores (`_`), or periods (`\.`); to the end of the string (`\z`).
+
+<aside>
+
+We briefly learned about [regex ("regular expression") parsing](https://en.wikipedia.org/wiki/Regular_expression) when we first learned Ruby. You can visit the [RegexOne](https://regexone.com/) browser game when you find time to learn more, and [Rubular](https://rubular.com/) as a quick reference and place to test patterns.
+</aside>
 
 ### Website validation
 

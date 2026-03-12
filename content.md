@@ -336,12 +336,10 @@ This is a PostgreSQL-specific feature. PostgreSQL has many powerful features lik
 
 ### Preventing blank usernames
 
-Notice that we also added `null: false` to the `username` column in the change above:
+We can also add `null: false` to the `username` column to prevent blank usernames from entering the database:
 
-```ruby{1:(25-35)}
+```ruby{1:(25-37)}
       t.citext :username, null: false
-      t.string :display_name
-      # ...
 ```
 {: filename="db/migrate/<timestamp>_devise_create_users.rb" }
 

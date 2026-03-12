@@ -347,9 +347,9 @@ This is a **database-level constraint** that prevents a row from being saved wit
 
 ### Default values
 
-Set sensible defaults on several columns:
+We can also set sensible defaults on several columns:
 
-```ruby{3:(30-43),4:(30-40),5:(32-43),6:(33-44)}
+```ruby{3:(25-39),4:(29-40),5:(32-43),6:(30-41)}
       # ...
       t.string :website
       t.boolean :private, default: true

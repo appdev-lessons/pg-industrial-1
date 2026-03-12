@@ -331,7 +331,7 @@ Then, further down in the same block, change the `username` column from `t.strin
 This enables PostgreSQL's `citext` (case-insensitive text) extension. Why does this matter? Without `citext`, if someone signs up as `Alice@Example.com` and later tries to sign in with `alice@example.com`, the database would treat those as different values. With `citext`, the database handles case-insensitive comparisons automatically — no need to call `.downcase` before every lookup.
 
 <aside>
-This is a PostgreSQL-specific feature. Previously, we used SQLite, which didn't support `citext`. PostgreSQL has many powerful features like this — JSON datatypes, range datatypes, geographic distance ordering, full-text search — and Rails provides first-class support for many of them. [See this Rails Guide for a rundown.](https://guides.rubyonrails.org/active_record_postgresql.html)
+This is a PostgreSQL-specific feature. PostgreSQL has many powerful features like this — JSON datatypes, range datatypes, geographic distance ordering, full-text search — and Rails provides first-class support for many of them. [See this Rails Guide for a rundown.](https://guides.rubyonrails.org/active_record_postgresql.html)
 </aside>
 
 ### Preventing blank usernames

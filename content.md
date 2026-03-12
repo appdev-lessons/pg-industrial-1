@@ -368,11 +368,12 @@ Whenever you generate a model, it's a good habit to think about default values f
 
 At the bottom of the migration, Devise already added indexes for `email` and `reset_password_token`. Add one more for `username`:
 
-```ruby{5}
+```ruby{4}
     # ...
     add_index :users, :email,                unique: true
     add_index :users, :reset_password_token, unique: true
     add_index :users, :username,             unique: true
+    # ...
   end
 end
 ```

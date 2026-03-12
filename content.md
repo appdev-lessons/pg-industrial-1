@@ -82,11 +82,11 @@ git commit -m "Added required gems to Gemfile"
 
 ## Setting up Cloudinary
 
-In previous projects, we might have storied uploaded images locally in the `public/` folder. That works fine in development for a few images, but when you're handling lots of images (like in Photogram), or when you deploy to production via a service like Render, the `public/` folder won't work. We need a cloud storage service, and we'll use Cloudinary.
+In previous projects, we might have stored uploaded images locally in the `public/` folder. That works fine in development for a few images, but when you're handling lots of images (like in Photogram), or when you deploy to production via a service like Render, the `public/` folder won't work. We need a cloud storage service, and we'll use Cloudinary.
 
 ### Configure environment variables
 
-To prepare, create a file called `.env` in the root of your project:
+To prepare, create a file called `.env` in the root of your project with three empty keys:
 
 ```
 CLOUDINARY_CLOUD_NAME=
@@ -108,7 +108,7 @@ If you don't already have one, go to [Cloudinary](https://cloudinary.com/users/r
 
 1. **Cloud name**: should be at the top of your dashboard page.
 2. **API Key**: to access the API values, click "Go to API Keys" next to your "Cloud name."
-3 **API Secret**: shown as hidden value next to the API Key. You will need to enter an email-delivered code to reveal this one.
+3. **API Secret**: shown as hidden value next to the API Key. You will need to enter an email-delivered code to reveal this one.
 
 As you find each value, enter it as the value for the corresponding key in your `.env` file in your codespace.
 

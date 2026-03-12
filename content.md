@@ -421,7 +421,7 @@ Open `app/models/user.rb`. Devise already generated some code for us. We're goin
 
 ### Active Storage attachments
 
-Add the Active Storage attachment declarations after the Devise configuration:
+Add the Active Storage `has_one_attached` attachment declarations after the Devise configuration:
 
 ```ruby{6,8,16-17}
 # == Schema Information

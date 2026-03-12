@@ -195,7 +195,7 @@ config.active_storage.service = :cloudinary
 
 This tells Active Storage to use the `cloudinary` service that we just uncommented in the `config/storage.yml` for file uploads, instead of the `local` filesystem (which you may have also noticed under the `local:` section of the `config/storage.yml`).
 
-For good measure, you can also find the `config.active_storage.service` line in the `config/environments/production.rb` file and also change it from `:local` to `:cloudinary`. That will prepare us in case we deploy the app later
+For good measure, you can also find the `config.active_storage.service` line in the `config/environments/production.rb` file and also change it from `:local` to `:cloudinary`. That will prepare us in case we deploy the app later.
 
 Phew! We're all set up to use Cloudinary for image uploads. Now would be a good time for a commit:
 
@@ -219,7 +219,7 @@ This creates a migration that adds three tables: `active_storage_blobs`, `active
 Go ahead and migrate:
 
 ```
-rake db:migrate
+rails db:migrate
 ```
 
 And commit:
@@ -239,17 +239,21 @@ First, run the Devise installer:
 rails generate devise:install
 ```
 
-If you are asked to overwrite any files, you can say yes (`Y` or `a` for "yes to all").
-
 The installer prints a list of manual setup steps in the terminal. One of them is defining a root route. We don't have any resources yet, but we know that `users#feed` will be our homepage eventually. Let's add it now:
 
-```ruby{3}
+```ruby{4}
 Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
+  
   root "users#feed"
 end
 ```
 {: filename="config/routes.rb" }
+
+<aside>
+
+We hadn't seen it before, but the `"/up"` route comes out-of-the-box with any modern Rails app. It's a "health check" placed at the top of the `routes.rb` and used by deployment services to periodically check that the app is running.
+</aside>
 
 This will cause an error if we visit the root URL right now (since we don't have a `UsersController` yet), but that's fine — we'll build it in a later lesson.
 
@@ -396,7 +400,7 @@ An ActiveRecord model validation checks uniqueness by first querying the databas
 Now migrate:
 
 ```
-rake db:migrate
+rails db:migrate
 ```
 
 And commit:
@@ -601,7 +605,7 @@ New photos start unpinned (`false`) and with zero likes and comments.
 Now migrate:
 
 ```
-rake db:migrate
+rails db:migrate
 ```
 
 ## Configuring the Photo model

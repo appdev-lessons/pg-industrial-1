@@ -49,7 +49,7 @@ We'll work on this branch for the rest of the lesson.
 
 ## Adding gems
 
-Our starting point is a bare Rails 8 app with just a health check route, an empty `ApplicationController`, an empty `ApplicationRecord`, and a pre-written `sample_data` rake task. The Gemfile has basic Rails gems, but it's missing several that we need.
+Our starting point is a bare Rails 8 app. The Gemfile has basic Rails gems, but it's missing several that we need.
 
 Open your `Gemfile` and add the following gems **outside** of any `group` block (we want these available in all environments, not just development or test):
 
@@ -63,7 +63,7 @@ gem "ransack"                         # Search and filtering
 ```
 {: filename="Gemfile" }
 
-<aside markdown="1">
+<aside>
 Why outside of any group? Gems in the `:development` group are only loaded while developing — things like `better_errors` for debugging. We don't want those in production because they waste memory. But gems like `devise` and `cloudinary` need to work everywhere: development, test, _and_ production. That's why they go outside any group block.
 </aside>
 
@@ -82,33 +82,35 @@ git commit -m "Added required gems to Gemfile"
 
 ## Setting up Cloudinary
 
-In previous projects, we stored uploaded images locally in the `public/` folder. That works fine in development, but when you deploy to a service like Render, the filesystem is ephemeral — your uploaded images disappear every time the server restarts. We need a cloud storage service, and we'll use [Cloudinary](https://cloudinary.com/).
-
-### Create a Cloudinary account
-
-If you don't already have one, go to [cloudinary.com](https://cloudinary.com/) and sign up for a free account. Once you're logged in, go to your Dashboard. You'll see three values we need:
-
-- **Cloud name**
-- **API Key**
-- **API Secret**
+In previous projects, we might have storied uploaded images locally in the `public/` folder. That works fine in development for a few images, but when you're handling lots of images (like in Photogram), or when you deploy to production via a service like Render, the `public/` folder won't work. We need a cloud storage service, and we'll use Cloudinary.
 
 ### Configure environment variables
 
-Create a file called `.env` in the root of your project (this file is already in `.gitignore`, so it won't be committed — which is exactly what we want, since it contains secrets):
+To prepare, create a file called `.env` in the root of your project:
 
 ```
-CLOUDINARY_CLOUD_NAME=your_cloud_name_here
-CLOUDINARY_API_KEY=your_api_key_here
-CLOUDINARY_API_SECRET=your_api_secret_here
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
 ```
-{: filename=".env" }
+{: filename=".env" copyable }
 
-Replace the placeholder values with your actual Cloudinary credentials from the dashboard.
+Now, let's get those keys.
 
-<div class="alert alert-danger">
+<aside>
 
 Never commit your `.env` file to git. It contains secret API keys. The `.gitignore` file in the starting point already excludes it, but double-check that `.env` appears in your `.gitignore` if you're not sure.
-</div>
+</aside>
+
+### Retrieve Cloudinary keys
+
+If you don't already have one, go to [Cloudinary](https://cloudinary.com/users/register_free) and sign up for a free account using your existing GitHub account. Once you're logged in, click "Home" on the left menu and go to your "Dashboard." You'll need these three values:
+
+1. **Cloud name**: should be at the top of your dashboard page.
+2. **API Key**: to access the API values, click "Go to API Keys" next to your "Cloud name."
+3 **API Secret**: shown as hidden value next to the API Key. You will need to enter an email-delivered code to reveal this one.
+
+As you find each value, enter it as the value for the corresponding key in your `.env` file in your codespace.
 
 ### Create the Cloudinary initializer
 
@@ -122,7 +124,7 @@ Cloudinary.config do |config|
   config.cdn_subdomain = true
 end
 ```
-{: filename="config/initializers/cloudinary.rb" }
+{: filename="config/initializers/cloudinary.rb" copyable }
 
 We use `ENV.fetch` instead of `ENV[]` because `fetch` will raise a helpful error message if the environment variable is missing, rather than silently returning `nil` and causing confusing errors later.
 
@@ -307,7 +309,7 @@ t.citext :username, null: false
 
 Why does this matter? Without `citext`, if someone signs up as `Alice@Example.com` and later tries to sign in with `alice@example.com`, the database would treat those as different values. With `citext`, the database handles case-insensitive comparisons automatically — no need to call `.downcase` before every lookup.
 
-<aside markdown="1">
+<aside>
 This is a PostgreSQL-specific feature. Previously, we used SQLite, which didn't support `citext`. PostgreSQL has many powerful features like this — JSON datatypes, range datatypes, geographic distance ordering, full-text search — and Rails provides first-class support for many of them. [See this Rails Guide for a rundown.](https://guides.rubyonrails.org/active_record_postgresql.html)
 </aside>
 
@@ -348,7 +350,7 @@ An index is like the index at the back of a book — it lets the database find r
 
 The `unique: true` option adds a **database constraint** enforcing uniqueness. This is stronger than an ActiveRecord `validates :uniqueness` alone, which is susceptible to race conditions.
 
-<aside markdown="1">
+<aside>
 An ActiveRecord model validation checks uniqueness by first querying the database to see if a matching record exists, then inserting the new record. But between those two steps, another request could sneak in and insert a duplicate. A database-level uniqueness constraint prevents this entirely — the database itself will reject the duplicate.
 </aside>
 
@@ -541,7 +543,7 @@ The generator created `t.references :owner, null: false, foreign_key: true`. But
 t.belongs_to :owner, null: false, foreign_key: { to_table: :users }, index: true
 ```
 
-<aside markdown="1">
+<aside>
 `t.belongs_to` and `t.references` are aliases — they do exactly the same thing. I used `belongs_to` here just because it reads nicely.
 </aside>
 

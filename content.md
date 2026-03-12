@@ -188,14 +188,16 @@ config.active_storage.service = :local
 
 Change it to:
 
-```ruby{1:(38-48)}
+```ruby{1:(33-43)}
 config.active_storage.service = :cloudinary
 ```
 {: filename="config/environments/development.rb" }
 
-This tells Active Storage to use Cloudinary for file uploads instead of the local filesystem.
+This tells Active Storage to use the `cloudinary` service that we just uncommented in the `config/storage.yml` for file uploads, instead of the `local` filesystem (which you may have also noticed under the `local:` section of the `config/storage.yml`).
 
-Now would be a good time for a commit:
+For good measure, you can also find the `config.active_storage.service` line in the `config/environments/production.rb` file and also change it from `:local` to `:cloudinary`. That will prepare us in case we deploy the app later
+
+Phew! We're all set up to use Cloudinary for image uploads. Now would be a good time for a commit:
 
 ```
 git add -A

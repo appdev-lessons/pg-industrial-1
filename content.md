@@ -418,18 +418,48 @@ end
 
 ## Configuring the User model
 
-Open `app/models/user.rb`. Devise already generated some code for us. We're going to add Active Storage attachments, an association, validations, and a callback. Here's the full file:
+Open `app/models/user.rb`. Devise already generated some code for us. We're going to add Active Storage attachments, an association, validations, and a callback. Let's walk through each change.
 
-```ruby{7-8,10,12-18,20,22-28}
-class User < ApplicationRecord
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+### Active Storage attachments
+
+Add the Active Storage attachment declarations after the Devise configuration:
+
+```ruby{4-5}
+  # ...
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
   has_one_attached :avatar_image, dependent: :purge_later
   has_one_attached :profile_banner, dependent: :purge_later
+  # ...
+```
+{: filename="app/models/user.rb" }
 
+These declarations tell Active Storage that a User can have an avatar image and a profile banner attached. The `dependent: :purge_later` option means that when a user is deleted, their attached images will be cleaned up from Cloudinary in a background job.
+
+Notice that `avatar_image` and `profile_banner` are **string columns** in our migration. That might seem odd since we're using Active Storage. The string columns are there for the sample data task, which stores Cloudinary URLs directly. Active Storage uses its own `active_storage_attachments` table to link records to uploaded files.
+
+### The association
+
+Next, add the association for photos:
+
+```ruby{3}
+  # ...
+  has_one_attached :profile_banner, dependent: :purge_later
+
+  has_many :own_photos, foreign_key: :owner_id, class_name: "Photo", dependent: :destroy
+  # ...
+```
+{: filename="app/models/user.rb" }
+
+We're calling the association `own_photos` (not just `photos`) because a user might interact with many photos they don't own — through likes, comments, etc. The `foreign_key: :owner_id` tells Rails to look for the `owner_id` column on the `photos` table, and `class_name: "Photo"` clarifies which model to use since the association name doesn't match the model name. The `dependent: :destroy` ensures that when a user is deleted, all their photos are deleted too.
+
+### Username validation
+
+Add the username validation:
+
+```ruby{3-8}
+  # ...
   has_many :own_photos, foreign_key: :owner_id, class_name: "Photo", dependent: :destroy
 
   validates :username,
@@ -439,7 +469,33 @@ class User < ApplicationRecord
       with: /\A[\w_\.]+\z/i,
       message: "can only contain letters, numbers, periods, and underscores"
     }
+  # ...
+```
+{: filename="app/models/user.rb" }
 
+We require a username, enforce uniqueness (at the Rails level, on top of our database constraint), and restrict the format to letters, numbers, periods, and underscores — just like Instagram. The regex `\A[\w_\.]+\z` means: from the start of the string (`\A`), one or more word characters, underscores, or periods (`[\w_\.]+`), to the end of the string (`\z`).
+
+### Website validation
+
+Add the website validation:
+
+```ruby{3}
+  # ...
+    }
+
+  validates :website, url: { allow_blank: true }
+  # ...
+```
+{: filename="app/models/user.rb" }
+
+This uses the `validate_url` gem we installed earlier. If a user provides a website, it must be a valid URL. But it's optional — `allow_blank: true` means they can leave it empty.
+
+### Default avatar callback
+
+Add the callback and method at the end of the class:
+
+```ruby{3,5-12}
+  # ...
   validates :website, url: { allow_blank: true }
 
   before_create :set_default_avatar
@@ -455,64 +511,6 @@ class User < ApplicationRecord
 end
 ```
 {: filename="app/models/user.rb" }
-
-Let's break this down piece by piece.
-
-### Active Storage attachments
-
-```ruby
-has_one_attached :avatar_image, dependent: :purge_later
-has_one_attached :profile_banner, dependent: :purge_later
-```
-
-These declarations tell Active Storage that a User can have an avatar image and a profile banner attached. The `dependent: :purge_later` option means that when a user is deleted, their attached images will be cleaned up from Cloudinary in a background job.
-
-Notice that `avatar_image` and `profile_banner` are **string columns** in our migration. That might seem odd since we're using Active Storage. The string columns are there for the sample data task, which stores Cloudinary URLs directly. Active Storage uses its own `active_storage_attachments` table to link records to uploaded files.
-
-### The association
-
-```ruby
-has_many :own_photos, foreign_key: :owner_id, class_name: "Photo", dependent: :destroy
-```
-
-We're calling the association `own_photos` (not just `photos`) because a user might interact with many photos they don't own — through likes, comments, etc. The `foreign_key: :owner_id` tells Rails to look for the `owner_id` column on the `photos` table, and `class_name: "Photo"` clarifies which model to use since the association name doesn't match the model name. The `dependent: :destroy` ensures that when a user is deleted, all their photos are deleted too.
-
-### Username validation
-
-```ruby
-validates :username,
-  presence: true,
-  uniqueness: true,
-  format: {
-    with: /\A[\w_\.]+\z/i,
-    message: "can only contain letters, numbers, periods, and underscores"
-  }
-```
-
-We require a username, enforce uniqueness (at the Rails level, on top of our database constraint), and restrict the format to letters, numbers, periods, and underscores — just like Instagram. The regex `\A[\w_\.]+\z` means: from the start of the string (`\A`), one or more word characters, underscores, or periods (`[\w_\.]+`), to the end of the string (`\z`).
-
-### Website validation
-
-```ruby
-validates :website, url: { allow_blank: true }
-```
-
-This uses the `validate_url` gem we installed earlier. If a user provides a website, it must be a valid URL. But it's optional — `allow_blank: true` means they can leave it empty.
-
-### Default avatar callback
-
-```ruby
-before_create :set_default_avatar
-
-def set_default_avatar
-  image = "https://res.cloudinary.com/dzhwwlb9e/image/upload/v1773240782/960px-Default_pfp.svg_dpntzd_ga9htr.png"
-  avatar_image.attach(
-    io: URI.open(image),
-    filename: image.split("/").last,
-    content_type: "image/jpg"
-  )
-end
-```
 
 The `before_create` callback runs just before a new user record is saved for the first time. It downloads a default avatar image from Cloudinary and attaches it to the user. This way, every user starts with a profile picture rather than a broken image link.
 
@@ -547,35 +545,20 @@ git commit -m "Generated Photos scaffold"
 
 ## Editing the Photos migration
 
-Open the generated migration file in `db/migrate/`. We need to make a few changes. Here's the final version:
-
-```ruby{6:(41-73),7:(20-48),8:(36-47),9:(29-40)}
-class CreatePhotos < ActiveRecord::Migration[8.0]
-  def change
-    create_table :photos do |t|
-      t.string :image
-      t.text :caption
-      t.belongs_to :owner, null: false, foreign_key: { to_table: :users }, index: true
-      t.boolean :pinned, default: false, null: false
-      t.integer :comments_count, default: 0
-      t.integer :likes_count, default: 0
-
-      t.timestamps
-    end
-  end
-end
-```
-{: filename="db/migrate/<date-time-of-migration>_create_photos.rb" }
-
-Let's walk through the key changes.
+Open the generated migration file in `db/migrate/`. We need to make a few changes. Let's walk through each one.
 
 ### Foreign key to the correct table
 
 The generator created `t.references :owner, null: false, foreign_key: true`. But `foreign_key: true` tells the database to look for a table called `owners` — which doesn't exist! Our table is `users`. We fix this by specifying the target table explicitly:
 
-```ruby
-t.belongs_to :owner, null: false, foreign_key: { to_table: :users }, index: true
+```ruby{4:(41-73)}
+      # ...
+      t.text :caption
+      t.belongs_to :owner, null: false, foreign_key: { to_table: :users }, index: true
+      t.boolean :pinned, default: false, null: false
+      # ...
 ```
+{: filename="db/migrate/<date-time-of-migration>_create_photos.rb" }
 
 <aside>
 `t.belongs_to` and `t.references` are aliases — they do exactly the same thing. I used `belongs_to` here just because it reads nicely.
@@ -585,11 +568,17 @@ t.belongs_to :owner, null: false, foreign_key: { to_table: :users }, index: true
 
 Just like with the Users migration, we set sensible defaults:
 
-```ruby
-t.boolean :pinned, default: false, null: false
-t.integer :comments_count, default: 0
-t.integer :likes_count, default: 0
+```ruby{3:(30-43),4:(30-40),5:(32-43)}
+      # ...
+      t.belongs_to :owner, null: false, foreign_key: { to_table: :users }, index: true
+      t.boolean :pinned, default: false, null: false
+      t.integer :comments_count, default: 0
+      t.integer :likes_count, default: 0
+
+      t.timestamps
+      # ...
 ```
+{: filename="db/migrate/<date-time-of-migration>_create_photos.rb" }
 
 New photos start unpinned (`false`) and with zero likes and comments.
 
@@ -601,15 +590,60 @@ rails db:migrate
 
 ## Configuring the Photo model
 
-Open `app/models/photo.rb`. The generator gave us a `belongs_to :owner`, but it doesn't know that `owner` refers to the `User` model. Let's flesh out the full model:
+Open `app/models/photo.rb`. The generator gave us a `belongs_to :owner`, but it doesn't know that `owner` refers to the `User` model. Let's walk through each change.
 
-```ruby{2,4,6-7,9-11}
+### Active Storage for images
+
+Add the Active Storage declaration at the top of the class:
+
+```ruby{2}
 class Photo < ApplicationRecord
   has_one_attached :image, dependent: :purge_later
 
   belongs_to :owner, class_name: "User", counter_cache: true
+  # ...
+```
+{: filename="app/models/photo.rb" }
+
+Just like with the User's avatar, we declare that a Photo has an attached image managed by Active Storage.
+
+### The belongs_to association
+
+Update the generated `belongs_to` to specify the class name and counter cache:
+
+```ruby{3:(24-56)}
+  # ...
+  has_one_attached :image, dependent: :purge_later
+
+  belongs_to :owner, class_name: "User", counter_cache: true
+  # ...
+```
+{: filename="app/models/photo.rb" }
+
+We specify `class_name: "User"` because the association name `owner` doesn't match the model name `User`. The `counter_cache: true` option is a nice performance optimization — every time a photo is created or destroyed, Rails will automatically increment or decrement the `photos_count` column on the associated User. This means we can display "42 photos" on a user's profile without running a `COUNT(*)` query every time.
+
+### Validations
+
+Add validations for the required fields:
+
+```ruby{3-4}
+  # ...
+  belongs_to :owner, class_name: "User", counter_cache: true
 
   validates :caption, presence: true
+  validates :image, presence: true
+  # ...
+```
+{: filename="app/models/photo.rb" }
+
+Every photo must have a caption and an image. Simple and essential.
+
+### Scopes
+
+Add three scopes for ordering and filtering:
+
+```ruby{3-5}
+  # ...
   validates :image, presence: true
 
   scope :latest, -> { order(created_at: :desc) }
@@ -618,39 +652,6 @@ class Photo < ApplicationRecord
 end
 ```
 {: filename="app/models/photo.rb" }
-
-### Active Storage for images
-
-```ruby
-has_one_attached :image, dependent: :purge_later
-```
-
-Just like with the User's avatar, we declare that a Photo has an attached image managed by Active Storage.
-
-### The belongs_to association
-
-```ruby
-belongs_to :owner, class_name: "User", counter_cache: true
-```
-
-We specify `class_name: "User"` because the association name `owner` doesn't match the model name `User`. The `counter_cache: true` option is a nice performance optimization — every time a photo is created or destroyed, Rails will automatically increment or decrement the `photos_count` column on the associated User. This means we can display "42 photos" on a user's profile without running a `COUNT(*)` query every time.
-
-### Validations
-
-```ruby
-validates :caption, presence: true
-validates :image, presence: true
-```
-
-Every photo must have a caption and an image. Simple and essential.
-
-### Scopes
-
-```ruby
-scope :latest, -> { order(created_at: :desc) }
-scope :pinned, -> { where(pinned: true) }
-scope :unpinned, -> { where(pinned: false) }
-```
 
 Scopes are named queries that you can chain. Instead of writing `Photo.where(pinned: true).order(created_at: :desc)` everywhere, we can write `Photo.pinned.latest`. They make our code more readable and keep query logic in the model where it belongs.
 

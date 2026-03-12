@@ -481,7 +481,7 @@ end
 ```
 {: filename="app/models/user.rb" }
 
-We require a username, enforce uniqueness (at the Rails level, on top of our database constraint), and restrict the format to letters, numbers, periods, and underscores, just like Instagram. The regex `\A[\w_\.]+\z` means: from the start of the string (`\A`), one or more (`[]+`): word characters (`\w`), underscores (`_`), or periods (`\.`); to the end of the string (`\z`).
+We require a username, enforce uniqueness (at the Rails level, on top of our database constraint), and restrict the format to letters, numbers, periods, and underscores. The regex `\A[\w_\.]+\z` means: from the start of the string (`\A`), one or more (`[]+`): word characters (`\w`), underscores (`_`), or periods (`\.`); to the end of the string (`\z`).
 
 <aside>
 

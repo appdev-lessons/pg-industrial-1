@@ -492,12 +492,13 @@ We briefly learned about [regex ("regular expression") parsing](https://en.wikip
 
 Add the website validation:
 
-```ruby{3}
+```ruby{5}
   # ...
-    }
+  validates :username,
+  # ...
 
   validates :website, url: { allow_blank: true }
-  # ...
+end
 ```
 {: filename="app/models/user.rb" }
 
@@ -507,7 +508,7 @@ This uses the `validate_url` gem we installed earlier. If a user provides a webs
 
 Add the callback and method at the end of the class:
 
-```ruby{3,5-12}
+```ruby{4,6-13}
   # ...
   validates :website, url: { allow_blank: true }
 
@@ -525,7 +526,7 @@ end
 ```
 {: filename="app/models/user.rb" }
 
-The `before_create` callback runs just before a new user record is saved for the first time. It downloads a default avatar image from Cloudinary and attaches it to the user. This way, every user starts with a profile picture rather than a broken image link.
+The `before_create` callback runs just before a new user record is saved for the first time. It downloads a default avatar image from our First Draft Cloudinary account and attaches it to the user. This way, every user starts with a profile picture rather than a broken image link.
 
 Now would be a good time for a commit:
 

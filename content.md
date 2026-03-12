@@ -37,7 +37,7 @@ Importantly, there's the `FollowRequest` table, which keeps track of who's follo
 
 ## Git workflow
 
-We're going to practice the professional git workflow of creating branches, committing to them, and merging back to `main`. That way, we can leave feedback in the form of comments on your pull requests — line-by-line comments on your actual code.
+We're going to practice the professional git workflow of creating branches, committing to them, and merging back to `main`. That way, we can leave feedback in the form of comments on your pull requests, with line-by-line comments on your actual code.
 
 Let's create our first branch now in the terminal:
 
@@ -64,7 +64,7 @@ gem "ransack"                         # Search and filtering
 {: filename="Gemfile" }
 
 <aside>
-Why outside of any group? Gems in the `:development` group are only loaded while developing — things like `better_errors` for debugging. We don't want those in production because they waste memory. But gems like `devise` and `cloudinary` need to work everywhere: development, test, _and_ production. That's why they go outside any group block.
+Why outside of any group? Gems in the `:development` group are only loaded while developing, like `better_errors` for debugging. We don't want those in production because they waste memory. But gems like `devise` and `cloudinary` need to work everywhere: development, test, _and_ production. That's why they go outside any group block.
 </aside>
 
 Now install them:
@@ -176,7 +176,7 @@ cloudinary_sample_data:
 ```
 {: filename="config/storage.yml" }
 
-There's also a `cloudinary_sample_data` section in the file — leave that as-is. It will be used by the sample data task.
+There's also a `cloudinary_sample_data` section in the file. Leave that as-is. It will be used by the sample data task.
 
 ### Point Active Storage to Cloudinary
 
@@ -214,7 +214,7 @@ Run the following at the terminal to install Active Storage:
 rails active_storage:install
 ```
 
-This creates a migration that adds three tables: `active_storage_blobs`, `active_storage_attachments`, and `active_storage_variant_records`. These tables work together to manage file uploads — blobs store metadata about the file, attachments link blobs to your models, and variant records track image transformations.
+This creates a migration that adds three tables: `active_storage_blobs`, `active_storage_attachments`, and `active_storage_variant_records`. These tables work together to manage file uploads: blobs store metadata about the file, attachments link blobs to your models, and variant records track image transformations.
 
 Go ahead and migrate:
 
@@ -255,7 +255,7 @@ end
 We hadn't seen it before, but the `"/up"` route comes out-of-the-box with any modern Rails app. It's a "health check" placed at the top of the `routes.rb` and used by deployment services to periodically check that the app is running.
 </aside>
 
-This will cause an error if we visit the root URL right now (since we don't have a `UsersController` yet), but that's fine — we'll build it in a later lesson.
+This will cause an error if we visit the root URL right now (since we don't have a `UsersController` yet), but that's fine. We'll build it in a later lesson.
 
 The other thing we should do now is double check this setting in our `development.rb` file:
 
@@ -300,7 +300,7 @@ git commit -m "Generated User model with Devise"
 
 ## Editing the Users migration
 
-Before we migrate, let's open the migration file and make some important improvements. You'll find it in `db/migrate/` — it will be named something like `<timestamp>_devise_create_users.rb`. We'll walk through each change one at a time.
+Before we migrate, let's open the migration file and make some important improvements. You'll find it in `db/migrate/`. It will be named something like `<timestamp>_devise_create_users.rb`. We'll walk through each change one at a time.
 
 ### Case-insensitive text with citext
 
@@ -328,10 +328,10 @@ Then, further down in the same block, change the `username` column from `t.strin
 ```
 {: filename="db/migrate/<timestamp>_devise_create_users.rb" }
 
-This enables PostgreSQL's `citext` (case-insensitive text) extension. Why does this matter? Without `citext`, if someone signs up as `Alice@Example.com` and later tries to sign in with `alice@example.com`, the database would treat those as different values. With `citext`, the database handles case-insensitive comparisons automatically — no need to call `.downcase` before every lookup.
+This enables PostgreSQL's `citext` (case-insensitive text) extension. Why does this matter? Without `citext`, if someone signs up as `Alice@Example.com` and later tries to sign in with `alice@example.com`, the database would treat those as different values. With `citext`, the database handles case-insensitive comparisons automatically, so there's no need to call `.downcase` before every lookup.
 
 <aside>
-This is a PostgreSQL-specific feature. PostgreSQL has many powerful features like this — JSON datatypes, range datatypes, geographic distance ordering, full-text search — and Rails provides first-class support for many of them. [See this Rails Guide for a rundown.](https://guides.rubyonrails.org/active_record_postgresql.html)
+This is a PostgreSQL-specific feature. PostgreSQL has many powerful features like this (JSON datatypes, range datatypes, geographic distance ordering, full-text search), and Rails provides first-class support for many of them. [See this Rails Guide for a rundown.](https://guides.rubyonrails.org/active_record_postgresql.html)
 </aside>
 
 ### Preventing blank usernames
@@ -362,7 +362,7 @@ We can also set sensible defaults on several columns:
 ```
 {: filename="db/migrate/<timestamp>_devise_create_users.rb" }
 
-Whenever you generate a model, it's a good habit to think about default values for each column. For counter columns, starting at `0` makes much more sense than `nil`. For the `private` column, we want new accounts to be private by default — users can opt in to making their profile public later.
+Whenever you generate a model, it's a good habit to think about default values for each column. For counter columns, starting at `0` makes much more sense than `nil`. For the `private` column, we want new accounts to be private by default. Users can opt in to making their profile public later.
 
 ### Indexes and uniqueness constraints
 
@@ -379,12 +379,12 @@ end
 ```
 {: filename="db/migrate/<timestamp>_devise_create_users.rb" }
 
-An index is like the index at the back of a book — it lets the database find records quickly without scanning every row. Since we'll frequently look up users by `username` (e.g., for profile URLs like `/alice`), an index here is essential.
+An index is like the index at the back of a book: it lets the database find records quickly without scanning every row. Since we'll frequently look up users by `username` (e.g., for profile URLs like `/alice`), an index here is essential.
 
 The `unique: true` option adds a **database constraint** enforcing uniqueness. This is stronger than an ActiveRecord `validates :uniqueness` alone, which is susceptible to race conditions.
 
 <aside>
-An ActiveRecord model validation checks uniqueness by first querying the database to see if a matching record exists, then inserting the new record. But between those two steps, another request could sneak in and insert a duplicate. A database-level uniqueness constraint prevents this entirely — the database itself will reject the duplicate.
+An ActiveRecord model validation checks uniqueness by first querying the database to see if a matching record exists, then inserting the new record. But between those two steps, another request could sneak in and insert a duplicate. A database-level uniqueness constraint prevents this entirely. The database itself will reject the duplicate.
 </aside>
 
 Now migrate:
@@ -451,7 +451,7 @@ Next, add the association for photos:
 ```
 {: filename="app/models/user.rb" }
 
-We're calling the association `own_photos` (not just `photos`) because a user might interact with many photos they don't own — through likes, comments, etc. The `foreign_key: :owner_id` tells Rails to look for the `owner_id` column on the `photos` table, and `class_name: "Photo"` clarifies which model to use since the association name doesn't match the model name. The `dependent: :destroy` ensures that when a user is deleted, all their photos are deleted too.
+We're calling the association `own_photos` (not just `photos`) because a user might interact with many photos they don't own (through likes, comments, etc.). The `foreign_key: :owner_id` tells Rails to look for the `owner_id` column on the `photos` table, and `class_name: "Photo"` clarifies which model to use since the association name doesn't match the model name. The `dependent: :destroy` ensures that when a user is deleted, all their photos are deleted too.
 
 ### Username validation
 
@@ -472,7 +472,7 @@ Add the username validation:
 ```
 {: filename="app/models/user.rb" }
 
-We require a username, enforce uniqueness (at the Rails level, on top of our database constraint), and restrict the format to letters, numbers, periods, and underscores — just like Instagram. The regex `\A[\w_\.]+\z` means: from the start of the string (`\A`), one or more word characters, underscores, or periods (`[\w_\.]+`), to the end of the string (`\z`).
+We require a username, enforce uniqueness (at the Rails level, on top of our database constraint), and restrict the format to letters, numbers, periods, and underscores, just like Instagram. The regex `\A[\w_\.]+\z` means: from the start of the string (`\A`), one or more word characters, underscores, or periods (`[\w_\.]+`), to the end of the string (`\z`).
 
 ### Website validation
 
@@ -487,7 +487,7 @@ Add the website validation:
 ```
 {: filename="app/models/user.rb" }
 
-This uses the `validate_url` gem we installed earlier. If a user provides a website, it must be a valid URL. But it's optional — `allow_blank: true` means they can leave it empty.
+This uses the `validate_url` gem we installed earlier. If a user provides a website, it must be a valid URL. But it's optional. `allow_blank: true` means they can leave it empty.
 
 ### Default avatar callback
 
@@ -548,7 +548,7 @@ Open the generated migration file in `db/migrate/`. We need to make a few change
 
 ### Foreign key to the correct table
 
-The generator created `t.references :owner, null: false, foreign_key: true`. But `foreign_key: true` tells the database to look for a table called `owners` — which doesn't exist! Our table is `users`. We fix this by specifying the target table explicitly:
+The generator created `t.references :owner, null: false, foreign_key: true`. But `foreign_key: true` tells the database to look for a table called `owners`, which doesn't exist! Our table is `users`. We fix this by specifying the target table explicitly:
 
 ```ruby{4:(41-73)}
       # ...
@@ -560,7 +560,7 @@ The generator created `t.references :owner, null: false, foreign_key: true`. But
 {: filename="db/migrate/<date-time-of-migration>_create_photos.rb" }
 
 <aside>
-`t.belongs_to` and `t.references` are aliases — they do exactly the same thing. I used `belongs_to` here just because it reads nicely.
+`t.belongs_to` and `t.references` are aliases. They do exactly the same thing. I used `belongs_to` here just because it reads nicely.
 </aside>
 
 ### Default values
@@ -663,7 +663,7 @@ git commit -m "Edited Photos migration and configured Photo model"
 
 ## About the sample data
 
-The starting point includes a pre-written `sample_data` rake task at `lib/tasks/dev.rake`. You don't need to write it — it's already done. Here's what it does at a high level:
+The starting point includes a pre-written `sample_data` rake task at `lib/tasks/dev.rake`. You don't need to write it; it's already done. Here's what it does at a high level:
 
 - Creates 10 users (Alice through Jack) with emails like `alice@example.com` and the password `appdev`
 - Makes some users private (Bob, Carol, Eve, Ivy)
@@ -698,7 +698,7 @@ At this point, you should have:
 
 Try starting your server with `bin/server` and visiting `/users/sign_up`. You should be able to create a new account. If everything is configured correctly, the new user will automatically get a default avatar image uploaded to Cloudinary.
 
-If you can sign up and sign in, you're in great shape. The views won't look like much yet — we'll build those out in later parts.
+If you can sign up and sign in, you're in great shape. The views won't look like much yet. We'll build those out in later parts.
 
 Now would be a good time for a final commit and push:
 
@@ -708,7 +708,7 @@ git commit -m "Completed User and Photo models"
 git push -u origin HEAD
 ```
 
-In the next part, we'll generate the remaining models — Likes, Comments, and FollowRequests — and wire up all the associations between them.
+In the next part, we'll generate the remaining models (Likes, Comments, and FollowRequests) and wire up all the associations between them.
 
 ---
 

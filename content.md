@@ -566,28 +566,39 @@ Open the generated migration file in `db/migrate/`. We need to make a few change
 
 ### Foreign key to the correct table
 
-The generator created `t.references :owner, null: false, foreign_key: true`. But `foreign_key: true` tells the database to look for a table called `owners`, which doesn't exist! Our table is `users`. We fix this by specifying the target table explicitly:
+The generator created: 
 
-```ruby{4:(41-73)}
+```rb{3}
       # ...
       t.text :caption
-      t.belongs_to :owner, null: false, foreign_key: { to_table: :users }, index: true
-      t.boolean :pinned, default: false, null: false
+      t.references :owner, null: false, foreign_key: true
+      t.boolean :pinned
+      # ...
+```
+{: filename="db/migrate/<date-time-of-migration>_create_photos.rb" }
+
+But `foreign_key: true` tells the database to look for a table called `owners`, which doesn't exist! Our table is `users`. We fix this by specifying the target table explicitly:
+
+```ruby{4:(9-18,54-73)}
+      # ...
+      t.text :caption
+      t.belongs_to :owner, null: false, foreign_key: { to_table: :users }
+      t.boolean :pinned
       # ...
 ```
 {: filename="db/migrate/<date-time-of-migration>_create_photos.rb" }
 
 <aside>
-`t.belongs_to` and `t.references` are aliases. They do exactly the same thing. I used `belongs_to` here just because it reads nicely.
+`t.belongs_to` and `t.references` are aliases. They do exactly the same thing. I changed it to `belongs_to` here just because it reads nicely.
 </aside>
 
 ### Default values
 
 Just like with the Users migration, we set sensible defaults:
 
-```ruby{3:(30-43),4:(30-40),5:(32-43)}
+```ruby{3:(24-52),4:(32-43),5:(29-40)}
       # ...
-      t.belongs_to :owner, null: false, foreign_key: { to_table: :users }, index: true
+      t.belongs_to :owner, null: false, foreign_key: { to_table: :users }
       t.boolean :pinned, default: false, null: false
       t.integer :comments_count, default: 0
       t.integer :likes_count, default: 0
@@ -599,7 +610,7 @@ Just like with the Users migration, we set sensible defaults:
 
 New photos start unpinned (`false`) and with zero likes and comments.
 
-Now migrate:
+Now we're ready to migrate:
 
 ```
 rails db:migrate

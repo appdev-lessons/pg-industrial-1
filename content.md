@@ -300,69 +300,35 @@ git commit -m "Generated User model with Devise"
 
 ## Editing the Users migration
 
-Before we migrate, let's open the migration file and make some important improvements. You'll find it in `db/migrate/` — it will be named something like `<timestamp>_devise_create_users.rb`.
+Before we migrate, let's open the migration file and make some important improvements. You'll find it in `db/migrate/` — it will be named something like `<timestamp>_devise_create_users.rb`. We'll walk through each change one at a time.
 
-Here is the complete migration file with all of our edits applied:
+### Case-insensitive text with citext
 
-```ruby{5,7:(9-14),17:(9-14),17:(17-30)}
-# frozen_string_literal: true
+Add `enable_extension("citext")` on the very first line inside `create_table`, and change the `email` column from `t.string` to `t.citext`:
 
-class DeviseCreateUsers < ActiveRecord::Migration[8.0]
-  def change
+```ruby{2,4:(9-14)}
     create_table :users do |t|
       enable_extension("citext")
       ## Database authenticatable
       t.citext :email,              null: false, default: ""
       t.string :encrypted_password, null: false, default: ""
+      # ...
+```
+{: filename="db/migrate/<timestamp>_devise_create_users.rb" }
 
-      ## Recoverable
-      t.string   :reset_password_token
-      t.datetime :reset_password_sent_at
+Then, further down in the same block, change the `username` column from `t.string` to `t.citext` as well:
 
-      ## Rememberable
+```ruby{3:(9-14)}
+      # ...
       t.datetime :remember_created_at
 
       t.citext :username, null: false
       t.string :display_name
-      t.string :avatar_image
-      t.string :profile_banner
-      t.string :bio
-      t.string :website
-      t.boolean :private, default: true
-      t.integer :likes_count, default: 0
-      t.integer :comments_count, default: 0
-      t.integer :photos_count, default: 0
-
-      t.timestamps null: false
-    end
-
-    add_index :users, :email,                unique: true
-    add_index :users, :reset_password_token, unique: true
-    add_index :users, :username,             unique: true
-  end
-end
+      # ...
 ```
-{: filename="db/migrate/<date-time-of-migration>_devise_create_users.rb" }
+{: filename="db/migrate/<timestamp>_devise_create_users.rb" }
 
-There's a lot going on here, so let's walk through each change.
-
-### Case-insensitive text with citext
-
-On the very first line inside `create_table`, we added:
-
-```ruby
-enable_extension("citext")
-```
-
-This enables PostgreSQL's `citext` (case-insensitive text) extension. Then we changed the `email` and `username` columns from `t.string` to `t.citext`:
-
-```ruby
-t.citext :email,              null: false, default: ""
-# ...
-t.citext :username, null: false
-```
-
-Why does this matter? Without `citext`, if someone signs up as `Alice@Example.com` and later tries to sign in with `alice@example.com`, the database would treat those as different values. With `citext`, the database handles case-insensitive comparisons automatically — no need to call `.downcase` before every lookup.
+This enables PostgreSQL's `citext` (case-insensitive text) extension. Why does this matter? Without `citext`, if someone signs up as `Alice@Example.com` and later tries to sign in with `alice@example.com`, the database would treat those as different values. With `citext`, the database handles case-insensitive comparisons automatically — no need to call `.downcase` before every lookup.
 
 <aside>
 This is a PostgreSQL-specific feature. Previously, we used SQLite, which didn't support `citext`. PostgreSQL has many powerful features like this — JSON datatypes, range datatypes, geographic distance ordering, full-text search — and Rails provides first-class support for many of them. [See this Rails Guide for a rundown.](https://guides.rubyonrails.org/active_record_postgresql.html)
@@ -370,36 +336,49 @@ This is a PostgreSQL-specific feature. Previously, we used SQLite, which didn't 
 
 ### Preventing blank usernames
 
-We added `null: false` to the `username` column:
+Notice that we also added `null: false` to the `username` column in the change above:
 
-```ruby
-t.citext :username, null: false
+```ruby{1:(25-35)}
+      t.citext :username, null: false
+      t.string :display_name
+      # ...
 ```
+{: filename="db/migrate/<timestamp>_devise_create_users.rb" }
 
 This is a **database-level constraint** that prevents a row from being saved with a `NULL` username. It's a stronger guarantee than a Rails validation alone, because it protects against race conditions and any code that might bypass ActiveRecord.
 
 ### Default values
 
-We set sensible defaults on several columns:
+Set sensible defaults on several columns:
 
-```ruby
-t.boolean :private, default: true
-t.integer :likes_count, default: 0
-t.integer :comments_count, default: 0
-t.integer :photos_count, default: 0
+```ruby{3:(30-43),4:(30-40),5:(32-43),6:(33-44)}
+      # ...
+      t.string :website
+      t.boolean :private, default: true
+      t.integer :likes_count, default: 0
+      t.integer :comments_count, default: 0
+      t.integer :photos_count, default: 0
+
+      t.timestamps null: false
+      # ...
 ```
+{: filename="db/migrate/<timestamp>_devise_create_users.rb" }
 
 Whenever you generate a model, it's a good habit to think about default values for each column. For counter columns, starting at `0` makes much more sense than `nil`. For the `private` column, we want new accounts to be private by default — users can opt in to making their profile public later.
 
 ### Indexes and uniqueness constraints
 
-At the bottom of the migration, Devise already added indexes for `email` and `reset_password_token`. We added one more for `username`:
+At the bottom of the migration, Devise already added indexes for `email` and `reset_password_token`. Add one more for `username`:
 
 ```ruby{5}
+    # ...
     add_index :users, :email,                unique: true
     add_index :users, :reset_password_token, unique: true
     add_index :users, :username,             unique: true
+  end
+end
 ```
+{: filename="db/migrate/<timestamp>_devise_create_users.rb" }
 
 An index is like the index at the back of a book — it lets the database find records quickly without scanning every row. Since we'll frequently look up users by `username` (e.g., for profile URLs like `/alice`), an index here is essential.
 

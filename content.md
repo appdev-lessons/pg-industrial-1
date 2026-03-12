@@ -277,11 +277,12 @@ git commit -m "Installed Devise and added root route"
 
 ## Generating the User model with Devise
 
-Instead of using the standard `rails generate model` command, we use Devise's generator. This gives us authentication columns (email, encrypted_password, etc.) for free, plus any custom columns we specify:
+Instead of using the standard `rails generate model` command, we use Devise's generator. This gives us authentication columns (email, encrypted_password, etc.) for free, plus any custom columns we specify. Use the copy button the left side to make sure you get this generator command without any typos:
 
 ```
-rails g devise user username display_name avatar_image profile_banner bio website private:boolean likes_count:integer comments_count:integer photos_count:integer
+rails g devise User username display_name avatar_image profile_banner bio website private:boolean likes_count:integer comments_count:integer photos_count:integer
 ```
+{: copyable }
 
 As a reminder: `g` is short for `generate`, and I dropped `:string` after `username`, `display_name`, etc. because `string` is the default datatype.
 

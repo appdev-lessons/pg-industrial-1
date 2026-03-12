@@ -6,13 +6,13 @@ This project includes automated tests, so click on this button to get started:
 
 LTI{Load Photogram Industrial assignment}(https://grades.firstdraft.com/launch)[S9ymPy6WCsn18gLbByVbZQ7k]{vfdtzJb5bLYqYwuqgeRKpc5d}(10)[Photogram Industrial Project]
 
-The current project, `pg-industrial`, spans over several of the next lessons. Keep the codespace open when you move on to those lessons in order to build on your progress through the series.
+The project, `pg-industrial`, spans over several of the next lessons. Keep the codespace open when you move on to those lessons in order to build on your progress through the series.
 
 <div class="alert alert-danger">
 
-You will need to go all the way through the lesson series and implement everything to get the `grade` tests to pass, which all start out failing. **None of the tests will even run until you add all of the models in the first two parts in this series.**
+You will need to go all the way through the lesson series and implement everything to get the `grade` tests to pass, which all start out failing. Don't panic if you see an error message in Grades about tests not being run prior to adding your User, Photo, Like, Comment, and FollowRequest models.
 
-So, don't panic if you see an error message in Grades about tests not being run prior to adding your User, Photo, Like, Comment, and FollowRequest models in the next lesson.
+**When you finish this lesson `grade` tests will not run, you will gain the points for the project as you move deeper into the lesson series.**
 </div>
 
 Here is the target that we will work towards:
@@ -23,13 +23,13 @@ This time around, Photogram will be _industrial grade_ — the kind of code you 
 
 This is like finishing school. We're going to learn how to level up to write a codebase that we can onboard professional developers to.
 
-Launch the codespace for your forked project and get the live preview running with `bin/dev`.
+Launch the codespace for your forked project and get the live preview running with `bin/server`.
 
 ## The data model
 
 Before we dive into code, let's look at the full data model we're building towards:
 
-![](/assets/pg-erd.png)
+![Photogram ERD](/assets/pg-erd.png)
 
 We have five tables: Users, Photos, Comments, Likes, and FollowRequests. In this first lesson, we'll focus on the **Users** and **Photos** tables. Parts 2 through 4 will cover the remaining tables and build out the views.
 
@@ -660,7 +660,7 @@ At this point, you should have:
 6. A `photos` table with proper foreign key, defaults, and indexes
 7. User and Photo models with associations, validations, and scopes
 
-Try starting your server with `bin/dev` and visiting `/users/sign_up`. You should be able to create a new account. If everything is configured correctly, the new user will automatically get a default avatar image uploaded to Cloudinary.
+Try starting your server with `bin/server` and visiting `/users/sign_up`. You should be able to create a new account. If everything is configured correctly, the new user will automatically get a default avatar image uploaded to Cloudinary.
 
 If you can sign up and sign in, you're in great shape. The views won't look like much yet — we'll build those out in later parts.
 

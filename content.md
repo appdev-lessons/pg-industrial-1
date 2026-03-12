@@ -318,11 +318,11 @@ Add `enable_extension("citext")` on the very first line inside `create_table`, a
 
 Then, further down in the same block, change the `username` column from `t.string` to `t.citext` as well:
 
-```ruby{3:(9-14)}
+```ruby{4:(9-14)}
       # ...
-      t.datetime :remember_created_at
+      # t.datetime :locked_at
 
-      t.citext :username, null: false
+      t.citext :username
       t.string :display_name
       # ...
 ```

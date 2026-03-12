@@ -768,6 +768,7 @@ Pushed for safekeeping? Good! Let's continue building Photogram Industrial in th
 - Approximately how long (in minutes) did this lesson take you to complete?
 {: .free_text_number #time_taken title="Time taken" points="1" answer="any" }
 
+
 <!--
 
 # List of project specs for AI assistant

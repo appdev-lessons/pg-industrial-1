@@ -672,7 +672,7 @@ Every photo must have a caption and an image. Simple and essential.
 
 Add three scopes for ordering and filtering:
 
-```ruby{3-5}
+```ruby{4-6}
   # ...
   validates :image, presence: true
 
@@ -683,7 +683,7 @@ end
 ```
 {: filename="app/models/photo.rb" }
 
-Scopes are named queries that you can chain. Instead of writing `Photo.where(pinned: true).order(created_at: :desc)` everywhere, we can write `Photo.pinned.latest`. They make our code more readable and keep query logic in the model where it belongs.
+[Scopes](https://guides.rubyonrails.org/active_record_querying.html#scopes) are named queries that you can chain. Instead of writing `Photo.where(pinned: true).order(created_at: :desc)` everywhere, we can write `Photo.pinned.latest`. They make our code more readable and keep query logic in the model where it belongs.
 
 Now would be a good time for a commit:
 

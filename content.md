@@ -656,13 +656,13 @@ We specify `class_name: "User"` because the association name `owner` doesn't mat
 
 Add validations for the required fields:
 
-```ruby{3-4}
+```ruby{4-5}
   # ...
   belongs_to :owner, class_name: "User", counter_cache: true
 
   validates :caption, presence: true
   validates :image, presence: true
-  # ...
+end
 ```
 {: filename="app/models/photo.rb" }
 

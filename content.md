@@ -98,6 +98,12 @@ git commit -m "Added required gems to Gemfile"
 
 ## Setting up Cloudinary
 
+<div class="alert alert-info">
+Are you still navigating manually through the file tree and clicking to open everything? That's going to become very painful, very quickly. One of the biggest things you can do to increase your productivity is navigating your codebase and its dozens of files without your mouse.
+
+Stop now and experiment with [jumping to files](/lessons/194-helper-methods-part-3#partials-shine-along-with-jump-to-file) in the VSCode fuzzy search bar.
+</div>
+
 In previous projects, we might have stored uploaded images locally in the `public/` folder. That works fine in development for a few images, but when you're handling lots of images (like in Photogram), or when you deploy to production via a service like Render, the `public/` folder won't work. We need a cloud storage service, and we'll use Cloudinary.
 
 ### Configure environment variables

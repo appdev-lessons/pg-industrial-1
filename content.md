@@ -37,7 +37,7 @@ Importantly, there's the `FollowRequest` table, which keeps track of who's follo
 
 ## Git workflow
 
-We're going to practice the professional git workflow of creating branches, committing to them, and merging back to `main`. That way, we can leave feedback in the form of comments on your pull requests, with line-by-line comments on your actual code.
+We're going to practice the [professional Git workflow](/lessons/196-git-cli) of creating branches, committing to them, opening pull requests, and merging. That way, we can leave feedback in the form of comments on your pull requests, with line-by-line comments on your actual code before any commit hits `main`.
 
 Let's create our first branch now in the terminal:
 
@@ -45,7 +45,7 @@ Let's create our first branch now in the terminal:
 git checkout -b create-database
 ```
 
-We'll work on this branch for the rest of the lesson.
+We'll work on this branch for the rest of the lesson. That means: we'll only make commits to the new branch, later we'll push the branch to publish it on GitHub, and we'll open a pull request to compare this branch to the one we branched off from (which is `main`).
 
 ## Adding gems
 
@@ -783,7 +783,7 @@ github.com/[YOUR_GITHUB_USERNAME]/pg-industrial/pull/X
 It should _not_ contain `appdev-projects` in the URL. If it does, you submitted a PR to _our_ repo instead of to _your own fork_.
 
 <aside markdown="1">
-You don't need to merge your branches now, but when you're ready: [see the notes in our Git CLI lesson](https://learn.firstdraft.com/lessons/196-git-cli#merging-branches).
+You don't need to merge your branches now, but when you're ready: [see the notes in our Git CLI lesson](/lessons/196-git-cli#merging-branches).
 </aside>
 
 Submit your pull request URL:

@@ -777,9 +777,14 @@ Pushed for safekeeping? Good!
 
 Now that you've pushed your branch to GitHub, it's time to open a **pull request** (PR). A pull request lets us review your code and leave line-by-line feedback.
 
+<div class="alert alert-info">
+
+[Here is a short video demonstration of the process.](https://share.descript.com/view/RLP4apAu5pp) You should also carefully read the notes below!
+</div>
+
 On GitHub, navigate to your `pg-industrial` repository. You should see a prompt to open a pull request for the `create-database` branch that you just published, or you can go to the "Pull requests" tab and click "New pull request."
 
-Make sure the **base** branch is `main` and the **compare** branch is `create-database`. Give it a title, then click "Create pull request."
+Make sure the **base** branch is `main` and the **compare** branch is `create-database`. Also be sure to change the base _repository_ from `appdev-projects/pg-industrial` to _your_ fork. Give it a title, then click "Create pull request."
 
 Your PR URL should look like:
 
@@ -789,12 +794,7 @@ github.com/[YOUR_GITHUB_USERNAME]/pg-industrial/pull/X
 
 It should _not_ contain `appdev-projects` in the URL. If it does, you submitted a PR to _our_ repo instead of to _your own fork_.
 
-<div class="alert alert-info">
-
-[Here is a short video demonstration of the process.](https://share.descript.com/view/RLP4apAu5pp) Follow along closely and reference it when you need a refresher!
-</div>
-
-<aside markdown="1">
+<aside>
 You don't need to merge your branches now, but when you're ready: [see the notes in our Git CLI lesson](/lessons/196-git-cli#merging-branches).
 </aside>
 

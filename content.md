@@ -52,6 +52,8 @@ git checkout -b create-database
 
 We'll work on this branch for the rest of the lesson. That means: we'll only make commits to the new branch, later we'll push the branch to publish it on GitHub, and we'll open a pull request to compare this branch to the one we branched off from (which is `main`).
 
+If you need a reference while you work, you can visit [my pull request](#my-pull-request){: target="_self" } below. Individual commits are also linked throughout the lesson for convenience.
+
 - Did you checkout a new `create-database` branch to work in?
 - Yes!
   - Great!
@@ -806,6 +808,10 @@ Submit your pull request URL:
 - any
   - Not quite. Make sure the URL looks like: `github.com/[YOUR_GITHUB_USERNAME]/pg-industrial/pull/X`
 {: .free_text #pr_url title="Pull request URL" points="1" answer="1" }
+
+## My pull request
+
+You can visit the full diff of changes on my [pull request](https://github.com/bpurinton/pg-industrial/pull/1) in the [Files changed tab](https://github.com/bpurinton/pg-industrial/pull/1/files) if you need to compare your work to a working solution.
 
 ---
 

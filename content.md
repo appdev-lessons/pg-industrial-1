@@ -37,7 +37,12 @@ Importantly, there's the `FollowRequest` table, which keeps track of who's follo
 
 ## Git workflow
 
-We're going to practice the [professional Git workflow](/lessons/196-git-cli) of creating branches, committing to them, opening pull requests, and merging. That way, we can leave feedback in the form of comments on your pull requests, with line-by-line comments on your actual code before any commit hits `main`.
+We're going to practice the [professional Git workflow](/lessons/196-git-cli) of creating branches, committing to them, opening pull requests, and merging. That way, we can leave feedback in the form of comments on your pull requests, with line-by-line comments on your actual code before any commit hits `main`. 
+
+<div class="alert alert-info">
+
+Part of industrial app building is avoiding messy incremental commits to `main`, which is sacred and often the source of our deployed app. We wouldn't want to break things for users while we're working on features!
+</div>
 
 Let's create our first branch now in the terminal:
 
@@ -46,6 +51,13 @@ git checkout -b create-database
 ```
 
 We'll work on this branch for the rest of the lesson. That means: we'll only make commits to the new branch, later we'll push the branch to publish it on GitHub, and we'll open a pull request to compare this branch to the one we branched off from (which is `main`).
+
+- Did you checkout a new `create-database` branch to work in?
+- Yes!
+  - Great!
+- Not yet.
+  - Please run that `git checkout -b create-database` branch before you proceed. We need to get out of the habit of committing directly to `main`.
+{: .choose_best #branching title="Did you branch?" points="1" answer="1" }
 
 ## Adding gems
 
@@ -765,12 +777,7 @@ Pushed for safekeeping? Good!
 
 Now that you've pushed your branch to GitHub, it's time to open a **pull request** (PR). A pull request lets us review your code and leave line-by-line feedback.
 
-<div class="alert alert-info">
-
-[Here is a short video demonstration of the process.](https://share.descript.com/view/RLP4apAu5pp) Follow along closely and reference it when you need a refresher!
-</div>
-
-On GitHub, navigate to your `pg-industrial` repository. You should see a prompt to open a pull request for the `create-database` branch, or you can go to the "Pull requests" tab and click "New pull request."
+On GitHub, navigate to your `pg-industrial` repository. You should see a prompt to open a pull request for the `create-database` branch that you just published, or you can go to the "Pull requests" tab and click "New pull request."
 
 Make sure the **base** branch is `main` and the **compare** branch is `create-database`. Give it a title, then click "Create pull request."
 
@@ -781,6 +788,11 @@ github.com/[YOUR_GITHUB_USERNAME]/pg-industrial/pull/X
 ```
 
 It should _not_ contain `appdev-projects` in the URL. If it does, you submitted a PR to _our_ repo instead of to _your own fork_.
+
+<div class="alert alert-info">
+
+[Here is a short video demonstration of the process.](https://share.descript.com/view/RLP4apAu5pp) Follow along closely and reference it when you need a refresher!
+</div>
 
 <aside markdown="1">
 You don't need to merge your branches now, but when you're ready: [see the notes in our Git CLI lesson](/lessons/196-git-cli#merging-branches).

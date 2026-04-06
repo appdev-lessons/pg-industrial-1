@@ -50,6 +50,17 @@ Let's create our first branch now in the terminal:
 git checkout -b create-database
 ```
 
+<aside>
+
+There is a another more modern command for creating a new branch:
+
+```
+% git switch -c create-database
+```
+
+`checkout -b` and `switch -c` have the same effect, and you will likely see both in online resources.
+</aside>
+
 We'll work on this branch for the rest of the lesson. That means: we'll only make commits to the new branch, later we'll push the branch to publish it on GitHub, and we'll open a pull request to compare this branch to the one we branched off from (which is `main`).
 
 If you need a reference while you work, you can visit [my pull request](#my-pull-request){: target="_self" } below. Individual commits are also linked throughout the lesson for convenience.
@@ -58,7 +69,7 @@ If you need a reference while you work, you can visit [my pull request](#my-pull
 - Yes!
   - Great!
 - Not yet.
-  - Please run that `git checkout -b create-database` branch before you proceed. We need to get out of the habit of committing directly to `main`.
+  - Please run that `git checkout -b create-database` (or `git switch -c create-database`) branch before you proceed. We need to get out of the habit of committing directly to `main`.
 {: .choose_best #branching title="Did you branch?" points="1" answer="1" }
 
 ## Adding gems

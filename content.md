@@ -23,7 +23,7 @@ This time around, Photogram will be _industrial grade_ — the kind of code you 
 
 This is like finishing school. We're going to learn how to level up to write a codebase that we can onboard professional developers to; and which LLMs can make quick sense of based on their professional code training data.
 
-Launch the codespace for your forked project and get the live preview running with `bin/server`. You'll see we're starting from scratch.
+Launch the codespace for your project and get the live preview running with `bin/server`. You'll see we're starting from scratch.
 
 ## The data model
 
@@ -805,6 +805,11 @@ Now that you've pushed your branch to GitHub, it's time to open a **pull request
 On GitHub, navigate to your `pg-industrial` repository. You should see a prompt to open a pull request for the `create-database` branch that you just published, or you can go to the "Pull requests" tab and click "New pull request."
 
 Make sure the **base** branch is `main` and the **compare** branch is `create-database`. Also be sure to change the base _repository_ from `appdev-projects/pg-industrial` to _your_ fork. Give it a title, then click "Create pull request."
+
+<aside>
+
+If there's no base _repository_ dropdown when you open your pull request, skip that step. Projects launched from the Grades page now save your work to your own repository rather than a fork, so your pull request already targets your repository.
+</aside>
 
 Your PR URL should look like:
 

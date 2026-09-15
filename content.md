@@ -1,4 +1,4 @@
-# Photogram Industrial, Part 1: Image uploads, devise users, and photos scaffold
+# Photogram Industrial, Part 1: Image Uploads, Devise Users, and Photos Scaffold
 
 ## Getting started
 

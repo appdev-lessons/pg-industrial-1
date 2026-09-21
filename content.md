@@ -8,9 +8,9 @@ LTI{Load Photogram Industrial assignment}(https://grades.firstdraft.com/launch)[
 
 The project, `pg-industrial`, spans over several of the next lessons. Keep the codespace open when you move on to those lessons in order to build on your progress through the series.
 
-<div class="alert alert-danger">
+<div class="alert alert-info">
 
-You will need to go all the way through the lesson series and implement everything to get the `grade` tests to pass, which all start out failing. Don't panic if you see an error message in Grades about tests not being run prior to adding your User, Photo, Like, Comment, and FollowRequest models.
+<i class="fa-solid fa-circle-info"></i> You will need to go all the way through the lesson series and implement everything to get the `grade` tests to pass, which all start out failing. Don't panic if you see an error message in Grades about tests not being run prior to adding your User, Photo, Like, Comment, and FollowRequest models.
 
 **When you finish this lesson `grade` tests will not run, you will gain the points for the project as you move deeper into the lesson series.**
 </div>
@@ -41,7 +41,7 @@ We're going to practice the [professional Git workflow](/lessons/196-git-cli) of
 
 <div class="alert alert-info">
 
-Part of industrial app building is avoiding messy incremental commits to `main`, which is sacred and often the source of our deployed app. We wouldn't want to break things for users while we're working on features!
+<i class="fa-solid fa-circle-info"></i> Part of industrial app building is avoiding messy incremental commits to `main`, which is sacred and often the source of our deployed app. We wouldn't want to break things for users while we're working on features!
 </div>
 
 Let's create our first branch now in the terminal:
@@ -455,7 +455,7 @@ We previously added `gem "strip_attributes"` to our `Gemfile`, so we now have th
 ## Configuring the User model
 
 <div class="alert alert-info">
-Are you still navigating manually through the file tree and clicking to open everything? That's going to become very painful, very quickly. One of the biggest things you can do to increase your productivity is navigating your codebase and its dozens of files without your mouse.
+<i class="fa-solid fa-circle-info"></i> Are you still navigating manually through the file tree and clicking to open everything? That's going to become very painful, very quickly. One of the biggest things you can do to increase your productivity is navigating your codebase and its dozens of files without your mouse.
 
 Stop now and experiment with [jumping to files](/lessons/194-helper-methods-part-3#partials-shine-along-with-jump-to-file) in the VSCode fuzzy search bar.
 </div>
@@ -757,9 +757,9 @@ At this point, you should have:
 
 We'll need to make some more progress on the database and backend setup before we can begin working on the frontend, but we've gotten a lot done!
 
-<div class="alert alert-danger">
+<div class="alert alert-info">
 
-The `rake sample_data` and `grade` commands **will not work yet**. You'll be able to get sample data and start earning points later as you continue through the lesson series.
+<i class="fa-solid fa-circle-info"></i> The `rake sample_data` and `grade` commands **will not work yet**. You'll be able to get sample data and start earning points later as you continue through the lesson series.
 
 Recall: `grade` is just a wrapper for the professional command: `rspec`. Try to run `rspec` in the terminal to see _why_ the specs contained in the `spec/` folder are still broken (`grade` hides all of the useful debugging details). We'll get them all passing soon enough!
 </div>
@@ -797,9 +797,9 @@ Pushed for safekeeping? Good!
 
 Now that you've pushed your branch to GitHub, it's time to open a **pull request** (PR). A pull request lets us review your code and leave line-by-line feedback.
 
-<div class="alert alert-info">
+<div class="alert alert-primary">
 
-[Here is a short video demonstration of the process.](https://share.descript.com/view/RLP4apAu5pp) You should also carefully read the notes below!
+<i class="fa-solid fa-circle-play"></i> [Here is a short video demonstration of the process.](https://share.descript.com/view/RLP4apAu5pp) You should also carefully read the notes below!
 </div>
 
 On GitHub, navigate to your `pg-industrial` repository. You should see a prompt to open a pull request for the `create-database` branch that you just published, or you can go to the "Pull requests" tab and click "New pull request."

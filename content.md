@@ -4,15 +4,15 @@
 
 This project includes automated tests, so click on this button to get started:
 
-LTI{Load Photogram Industrial assignment}(https://grades.firstdraft.com/launch)[S9ymPy6WCsn18gLbByVbZQ7k]{vfdtzJb5bLYqYwuqgeRKpc5d}(10)[Photogram Industrial Project]
+LTI{Load Photogram Industrial assignment}(https://grades.firstdraft.com/launch)[S9ymPy6WCsn18gLbByVbZQ7k]{vfdtzJb5bLYqYwuqgeRKpc5d}(20)[Photogram Industrial Project]
 
 The project, `pg-industrial`, spans over several of the next lessons. Keep the codespace open when you move on to those lessons in order to build on your progress through the series.
 
 <div class="alert alert-info">
 
-<i class="fa-solid fa-circle-info"></i> You will need to go all the way through the lesson series and implement everything to get the `grade` tests to pass, which all start out failing. Don't panic if you see an error message in Grades about tests not being run prior to adding your User, Photo, Like, Comment, and FollowRequest models.
+<i class="fa-solid fa-circle-info"></i> The `grade` tests cover the whole series, so they all start out failing, and they can't run at all until the app has all five of its models: User, Photo, Comment, Like, and FollowRequest. Don't worry if Grades reports that no tests ran after this lesson.
 
-**When you finish this lesson `grade` tests will not run, you will gain the points for the project as you move deeper into the lesson series.**
+**You earn this project's points as you move through the series.** Part 2 adds the last three models, and the model tests start passing. Parts 3 and 4 build the pages that the rest of the tests visit, and the whole suite passes at the end of Part 4.
 </div>
 
 Here is the target that we will work towards:
@@ -23,7 +23,12 @@ This time around, Photogram will be _industrial grade_ — the kind of code you 
 
 This is like finishing school. We're going to learn how to level up to write a codebase that we can onboard professional developers to; and which LLMs can make quick sense of based on their professional code training data.
 
-Launch the codespace for your project and get the live preview running with `bin/server`. You'll see we're starting from scratch.
+Launch the codespace for your project and start the live preview with `bin/dev`. You'll see we're starting from scratch.
+
+<aside>
+
+So far, we've started the live preview with `bin/server`. From this lesson on, we'll use `bin/dev` instead. `bin/dev` is the script that every new Rails app comes with: in this app it runs `bin/rails server`, and in apps that also have a CSS or JavaScript build step, it starts those processes too. `bin/server` is our own wrapper around `rails server`, which first clears out a server that didn't shut down cleanly. We use `bin/dev` because it's the command the Rails guides, other developers, and later lessons use. If `bin/dev` ever refuses to start with `A server is already running`, run `bin/server` once instead.
+</aside>
 
 ## The data model
 
@@ -37,7 +42,7 @@ Importantly, there's the `FollowRequest` table, which keeps track of who's follo
 
 ## Git workflow
 
-We're going to practice the [professional Git workflow](/lessons/196-git-cli) of creating branches, committing to them, opening pull requests, and merging. That way, we can leave feedback in the form of comments on your pull requests, with line-by-line comments on your actual code before any commit hits `main`. 
+We're going to practice the [professional Git workflow](/lessons/196-git-cli) of creating branches, committing to them, opening pull requests, and merging. That way, we can leave feedback in the form of comments on your pull requests, with line-by-line comments on your actual code before any commit hits `main`.
 
 <div class="alert alert-info">
 
@@ -47,29 +52,27 @@ We're going to practice the [professional Git workflow](/lessons/196-git-cli) of
 Let's create our first branch now in the terminal:
 
 ```
-git checkout -b create-database
+git switch -c create-database
 ```
 
 <aside>
 
-There is a another more modern command for creating a new branch:
+You will also see an older command for creating a new branch, in online resources and in some of our earlier lessons:
 
 ```
-% git switch -c create-database
+git checkout -b create-database
 ```
 
-`checkout -b` and `switch -c` have the same effect, and you will likely see both in online resources.
+`switch -c` and `checkout -b` have the same effect. We'll use `git switch -c` throughout this series.
 </aside>
 
 We'll work on this branch for the rest of the lesson. That means: we'll only make commits to the new branch, later we'll push the branch to publish it on GitHub, and we'll open a pull request to compare this branch to the one we branched off from (which is `main`).
 
-If you need a reference while you work, you can visit [my pull request](#my-pull-request){: target="_self" } below. Individual commits are also linked throughout the lesson for convenience.
-
-- Did you checkout a new `create-database` branch to work in?
+- Did you create a new `create-database` branch to work in?
 - Yes!
-  - Great!
+  - Yes! We'll make every commit in this lesson on that branch.
 - Not yet.
-  - Please run that `git checkout -b create-database` (or `git switch -c create-database`) branch before you proceed. We need to get out of the habit of committing directly to `main`.
+  - Please run `git switch -c create-database` before you proceed. We need to get out of the habit of committing directly to `main`.
 {: .choose_best #branching title="Did you branch?" points="1" answer="1" }
 
 ## Adding gems
@@ -92,6 +95,17 @@ gem "ransack"                         # Search and filtering
 Why outside of any group? Gems in the `:development` group are only loaded while developing, like `better_errors` for debugging. We don't want those in production because they waste memory. But gems like `devise` and `cloudinary` need to work everywhere: development, test, _and_ production. That's why they go outside any group block.
 </aside>
 
+Here's a quick check on where a gem belongs.
+
+- Where in the `Gemfile` should a payment gem like `stripe` go, if the live app uses it to charge cards?
+- Inside `group :development do`
+  - Not quite. Gems in that group aren't loaded in production, where the charges happen.
+- Inside `group :test do`
+  - Not quite. Gems in that group are only loaded while the tests run.
+- Outside any `group` block
+  - Yes! Gems outside every group are loaded in all environments, production included.
+{: .choose_best #gems_outside_group title="Gems outside a group" points="1" answer="3" }
+
 Now install them:
 
 ```
@@ -104,8 +118,6 @@ Now would be a good time for a commit:
 git add -A
 git commit -m "Added required gems to Gemfile"
 ```
-
-[See my commit for this step.](https://github.com/bpurinton/pg-industrial/commit/a858fd108027be86bebb9b61c175008c4959ccbb)
 
 ## Setting up Cloudinary
 
@@ -138,6 +150,8 @@ If you don't already have one, go to [Cloudinary](https://cloudinary.com/users/r
 3. **API Secret**: shown as hidden value next to the API Key. You will need to enter an email-delivered code to reveal this one.
 
 As you find each value, enter it as the value for the corresponding key in your `.env` file in your codespace.
+
+<!-- [screenshot] S1: the Cloudinary dashboard's API Keys page, with the cloud name, API key, and the masked API secret marked (blur the real values) -->
 
 ### Create the Cloudinary initializer
 
@@ -180,7 +194,7 @@ cloudinary_sample_data:
 ```
 {: filename="config/storage.yml" }
 
- Uncomment it and update the folder name so it looks like this:
+Uncomment it and update the folder name so it looks like this:
 
 ```yaml{8-10}
 # ...
@@ -224,14 +238,12 @@ This tells Active Storage to use the `cloudinary` service that we just uncomment
 
 For good measure, you can also find the `config.active_storage.service` line in the `config/environments/production.rb` file and also change it from `:local` to `:cloudinary`. That will prepare us in case we deploy the app later.
 
-Phew! We're all set up to use Cloudinary for image uploads. Now would be a good time for a commit:
+We're all set up to use Cloudinary for image uploads. Now would be a good time for a commit:
 
 ```
 git add -A
 git commit -m "Configured Cloudinary for image uploads"
 ```
-
-[See my commit for this step.](https://github.com/bpurinton/pg-industrial/commit/20600eb0e979497d2d0f293b3ac3c49ebed6f360)
 
 ## Installing Active Storage
 
@@ -258,8 +270,6 @@ git add -A
 git commit -m "Installed Active Storage"
 ```
 
-[See my commit for this step.](https://github.com/bpurinton/pg-industrial/commit/73d8c6cd7440510b2ba419bfd7aea18a4c4f61e4)
-
 ## Installing Devise
 
 Now let's set up Devise, the gem that handles user authentication (sign up, sign in, sign out, password resets, and more).
@@ -272,10 +282,12 @@ rails generate devise:install
 
 The installer prints a list of manual setup steps in the terminal. We don't need to do all of them now. One that we should do is defining a root route. We don't have any resources yet, but we know that `users#feed` will be our homepage eventually. Let's add it now:
 
-```ruby{4}
+```ruby{6}
 Rails.application.routes.draw do
+  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
+  # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
-  
+
   root "users#feed"
 end
 ```
@@ -290,12 +302,12 @@ This will cause an error if we visit the root URL right now (since we don't have
 
 The other thing we should do now is double check this setting in our `development.rb` file:
 
-```rb{}
-config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+```ruby
+config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
 ```
-{: filename="config/environments/development.rb"}
+{: filename="config/environments/development.rb" }
 
-Development email configuration should already be setup, but check the file and confirm.
+Our starting point already sets this up for development, but check the file and confirm.
 
 We won't worry about flash messages or view templates for now (items 3 and 4). We'll get to those later.
 
@@ -306,11 +318,9 @@ git add -A
 git commit -m "Installed Devise and added root route"
 ```
 
-[See my commit for this step.](https://github.com/bpurinton/pg-industrial/commit/93313b536124d55eca3b6b93684581d5f59dc5b1)
-
 ## Generating the User model with Devise
 
-Instead of using the standard `rails generate model` command, we use Devise's generator. This gives us authentication columns (email, encrypted_password, etc.) for free, plus any custom columns we specify. Use the copy button the left side to make sure you get this generator command without any typos:
+Instead of using the standard `rails generate model` command, we use Devise's generator. This gives us authentication columns (email, encrypted_password, etc.) for free, plus any custom columns we specify. Use the copy button on the left side to make sure you get this generator command without any typos:
 
 ```
 rails g devise User username display_name avatar_image profile_banner bio website private:boolean likes_count:integer comments_count:integer photos_count:integer
@@ -330,8 +340,6 @@ Let's commit the generated files before we start editing:
 git add -A
 git commit -m "Generated User model with Devise"
 ```
-
-[See my commit for this step.](https://github.com/bpurinton/pg-industrial/commit/aa3de34ab0fa30f7f6e75005e9ae01b3e52c8f12)
 
 ## Editing the Users migration
 
@@ -368,6 +376,17 @@ This enables PostgreSQL's `citext` (case-insensitive text) extension. Why does t
 <aside>
 This is a PostgreSQL-specific feature. PostgreSQL has many powerful features like this (JSON datatypes, range datatypes, geographic distance ordering, full-text search), and Rails provides first-class support for many of them. [See this Rails Guide for a rundown.](https://guides.rubyonrails.org/active_record_postgresql.html)
 </aside>
+
+Let's check how a `citext` column compares values.
+
+- A `subscribers` table stores `email` as `citext`, and one row holds `bob@example.com`. Does `Subscriber.find_by(email: "Bob@Example.com")` find that row?
+- No, the case has to match
+  - Not quite. That's how a plain `string` column compares values.
+- Yes
+  - Yes! A `citext` column compares values without regard to case.
+- Only if we call `.downcase` on the argument first
+  - Not quite. With `citext`, the database ignores case for us.
+{: .choose_best #citext_lookup title="citext lookups" points="1" answer="2" }
 
 ### Preventing blank usernames
 
@@ -435,8 +454,6 @@ git add -A
 git commit -m "Edited and migrated Users table with citext, defaults, and indexes"
 ```
 
-[See my commit for this step.](https://github.com/bpurinton/pg-industrial/commit/39a8b7ce6866ef554647b075b15433223d832d4e)
-
 ## Configuring ApplicationRecord
 
 Before we configure the User model, let's add `strip_attributes` to `ApplicationRecord` so that _every_ model in our app benefits from it:
@@ -455,6 +472,7 @@ We previously added `gem "strip_attributes"` to our `Gemfile`, so we now have th
 ## Configuring the User model
 
 <div class="alert alert-info">
+
 <i class="fa-solid fa-circle-info"></i> Are you still navigating manually through the file tree and clicking to open everything? That's going to become very painful, very quickly. One of the biggest things you can do to increase your productivity is navigating your codebase and its dozens of files without your mouse.
 
 Stop now and experiment with [jumping to files](/lessons/194-helper-methods-part-3#partials-shine-along-with-jump-to-file) in the VSCode fuzzy search bar.
@@ -572,6 +590,8 @@ end
 
 The `before_create` callback runs just before a new user record is saved for the first time. It downloads a default avatar image from our First Draft Cloudinary account and attaches it to the user. This way, every user starts with a profile picture rather than a broken image link.
 
+Downloading a file inside a callback makes each sign-up a little slower. That's acceptable here, since it's one small image. In Part 2, we'll add a condition so that the callback skips any user who already has an avatar attached, because the sample data task attaches its own avatars.
+
 If you're unfamiliar with callbacks, I strongly recommend quickly skimming [the official Rails guide on them](https://guides.rubyonrails.org/active_record_callbacks.html).
 
 Now would be a good time for a commit:
@@ -580,8 +600,6 @@ Now would be a good time for a commit:
 git add -A
 git commit -m "Configured ApplicationRecord and User model"
 ```
-
-[See my commit for this step.](https://github.com/bpurinton/pg-industrial/commit/f4336d5a8ca4634e4ef615c784d025d803e679d9)
 
 ## Generating the Photos scaffold
 
@@ -606,7 +624,18 @@ git add -A
 git commit -m "Generated Photos scaffold"
 ```
 
-[See my commit for this step.](https://github.com/bpurinton/pg-industrial/commit/1721b36214941330bcaad520850fcd13769d05cd)
+Before we edit the migration, here's a check on what `references` produces.
+
+- Which column does `rails generate model Review book:references` add to the `reviews` table?
+- `book_id`
+  - Yes! `references` names the column after the association, plus `_id`.
+- `book`
+  - Not quite. The column holds the book's ID, so its name ends in `_id`.
+- `books_id`
+  - Not quite. The association name is singular, so the column is too.
+- `reference_id`
+  - Not quite. `references` is the column type; the name comes from `book`.
+{: .choose_best #references_column title="The references column" points="1" answer="1" }
 
 ## Editing the Photos migration
 
@@ -614,7 +643,7 @@ Open the generated migration file in `db/migrate/`. We need to make a few change
 
 ### Foreign key to the correct table
 
-The generator created: 
+The generator created:
 
 ```rb{3}
       # ...
@@ -664,6 +693,13 @@ Now we're ready to migrate:
 rails db:migrate
 ```
 
+<div class="alert alert-success">
+
+<i class="fa-solid fa-circle-check"></i> Stop the server with <kbd>Ctrl</kbd> + <kbd>C</kbd> and start it again with `bin/dev`, so that it loads the new gems and the Cloudinary initializer. Then visit `/rails/db` in your live app preview. You should see the `users` and `photos` tables, along with the `active_storage_` tables.
+</div>
+
+<!-- [screenshot] S2: /rails/db after both migrations, listing users, photos, and the active_storage_ tables -->
+
 ## Configuring the Photo model
 
 Open `app/models/photo.rb`. Let's walk through each change.
@@ -685,7 +721,7 @@ Just like with the User's avatar, we declare that a Photo has an attached image 
 
 ### The belongs_to association
 
-The generator gave us a `belongs_to :owner`, but it doesn't know that `owner` refers to the `User` model. 
+The generator gave us a `belongs_to :owner`, but it doesn't know that `owner` refers to the `User` model.
 
 Update the generated `belongs_to` to specify the class name and counter cache:
 
@@ -698,7 +734,18 @@ end
 ```
 {: filename="app/models/photo.rb" }
 
-We specify `class_name: "User"` because the association name `owner` doesn't match the model name `User`. The `counter_cache: true` option is a nice performance optimization — every time a photo is created or destroyed, Rails will automatically increment or decrement the `photos_count` column on the associated User. This means we can display "42 photos" on a user's profile without running a `COUNT(*)` query every time.
+We specify `class_name: "User"` because the association name `owner` doesn't match the model name `User`. The `counter_cache: true` option keeps a running count: every time a photo is created or destroyed, Rails will automatically increment or decrement the `photos_count` column on the associated User. This means we can display "42 photos" on a user's profile without running a `COUNT(*)` query every time.
+
+Here's a check on where that count lives.
+
+- If `Comment` has `belongs_to :article, counter_cache: true`, which column does Rails keep up to date?
+- `articles_count` on `comments`
+  - Not quite. The count lives on the parent record, the article.
+- `count` on `articles`
+  - Not quite. Rails names the column after the child table, plus `_count`.
+- `comments_count` on `articles`
+  - Yes! That's why we gave `users` a `photos_count` column.
+{: .choose_best #counter_cache_column title="The counter cache column" points="1" answer="3" }
 
 ### Validations
 
@@ -714,7 +761,7 @@ end
 ```
 {: filename="app/models/photo.rb" }
 
-Every photo must have a caption and an image. Simple and essential.
+Every photo must have a caption and an image.
 
 ### Scopes
 
@@ -740,8 +787,6 @@ git add -A
 git commit -m "Edited Photos migration and configured Photo model"
 ```
 
-[See my commit for this step.](https://github.com/bpurinton/pg-industrial/commit/34c77519374e0b5a3e9cd6712275a78ace0ae69b)
-
 ## Verify your progress
 
 At this point, you should have:
@@ -755,13 +800,13 @@ At this point, you should have:
 7. A full `photos` scaffold including a controller and view templates folder.
 8. User and Photo models with associations, validations, and scopes.
 
-We'll need to make some more progress on the database and backend setup before we can begin working on the frontend, but we've gotten a lot done!
+We'll need to make some more progress on the database and backend setup before we can begin working on the frontend.
 
-<div class="alert alert-info">
+The `rake sample_data` and `grade` commands won't work yet. `grade` runs the same tests as the professional command, `rspec`, but hides the debugging details, so `rspec` is the one to run when we want to know _why_ the tests in the `spec/` folder fail.
 
-<i class="fa-solid fa-circle-info"></i> The `rake sample_data` and `grade` commands **will not work yet**. You'll be able to get sample data and start earning points later as you continue through the lesson series.
+<div class="alert alert-success">
 
-Recall: `grade` is just a wrapper for the professional command: `rspec`. Try to run `rspec` in the terminal to see _why_ the specs contained in the `spec/` folder are still broken (`grade` hides all of the useful debugging details). We'll get them all passing soon enough!
+<i class="fa-solid fa-circle-check"></i> Run `rspec` at the terminal. It should stop before running any tests, with `0 examples, 0 failures, 3 errors occurred outside of examples` at the bottom. Scroll up and you'll find `uninitialized constant Comment`, `uninitialized constant FollowRequest`, and `uninitialized constant Like`: the spec files for those three models can't load until the models exist. We'll add them in Part 2.
 </div>
 
 ## Push the branch
@@ -832,10 +877,6 @@ Submit your pull request URL:
   - Not quite. Make sure the URL looks like: `github.com/[YOUR_GITHUB_USERNAME]/pg-industrial/pull/X`
 {: .free_text #pr_url title="Pull request URL" points="1" answer="1" }
 
-## My pull request
-
-You can visit the full diff of changes on my [pull request](https://github.com/bpurinton/pg-industrial/pull/1) in the [Files changed tab](https://github.com/bpurinton/pg-industrial/pull/1/files) if you need to compare your work to a working solution.
-
 ---
 
 - Approximately how long (in minutes) did this lesson take you to complete?
@@ -867,6 +908,7 @@ RSpec.describe Photo, type: :model do
 end
 
 require "rails_helper"
+
 
 RSpec.describe User, type: :model do
   describe "has a has_many association defined called 'comments' with Class name 'Comment' and foreign key 'author_id'", points: 1 do

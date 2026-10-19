@@ -143,15 +143,15 @@ Never commit your `.env` file to git. It contains secret API keys. The `.gitigno
 
 ### Retrieve Cloudinary keys
 
-If you don't already have one, go to [Cloudinary](https://cloudinary.com/users/register_free) and sign up for a free account using your existing GitHub account. Once you're logged in, click "Home" on the left menu and go to your "Dashboard." You'll need these three values:
+If you don't already have one, go to [Cloudinary](https://cloudinary.com/users/register_free) and sign up for a free account using your existing GitHub account. Once you're logged in, click "Home" on the left menu, go to your "Dashboard," and click "Go to API Keys" next to your "Cloud name." You'll need three values from that page, numbered in the screenshot below:
 
-1. **Cloud name**: should be at the top of your dashboard page.
-2. **API Key**: to access the API values, click "Go to API Keys" next to your "Cloud name."
-3. **API Secret**: shown as hidden value next to the API Key. You will need to enter an email-delivered code to reveal this one.
+1. **Cloud name**: shown next to the "API Keys" heading, and at the end of the API environment variable, after the `@`.
+2. **API Key**: in the API Key column.
+3. **API Secret**: hidden in the API Secret column. Click the eye icon to reveal it (you will need to enter an email-delivered code) or the copy icon to copy it.
+
+![Cloudinary's API Keys page, with the cloud name at the end of the API environment variable, the API key, and the API secret's reveal and copy icons numbered 1 to 3](/assets/cloudinary-api-keys.png)
 
 As you find each value, enter it as the value for the corresponding key in your `.env` file in your codespace.
-
-<!-- [screenshot] S1: the Cloudinary dashboard's API Keys page, with the cloud name, API key, and the masked API secret marked (blur the real values) -->
 
 ### Create the Cloudinary initializer
 
@@ -695,10 +695,8 @@ rails db:migrate
 
 <div class="alert alert-success">
 
-<i class="fa-solid fa-circle-check"></i> Stop the server with <kbd>Ctrl</kbd> + <kbd>C</kbd> and start it again with `bin/dev`, so that it loads the new gems and the Cloudinary initializer. Then visit `/rails/db` in your live app preview. You should see the `users` and `photos` tables, along with the `active_storage_` tables.
+<i class="fa-solid fa-circle-check"></i> Stop the server with <kbd>Ctrl</kbd> + <kbd>C</kbd> and start it again with `bin/dev`, so that it loads the new gems and the Cloudinary initializer. Then open a `rails console` in a second terminal and try `User.count` and `Photo.count`. Both should return `0`: the tables exist, and they're empty for now.
 </div>
-
-<!-- [screenshot] S2: /rails/db after both migrations, listing users, photos, and the active_storage_ tables -->
 
 ## Configuring the Photo model
 

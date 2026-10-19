@@ -507,7 +507,7 @@ end
 ```
 {: filename="app/models/user.rb" }
 
-These declarations tell Active Storage that a User can have an avatar image and a profile banner attached in the `avatar_image` and `profile_banner` columns that we prepared. The `dependent: :purge_later` option means that when a user is deleted, their attached images will be automatically cleaned up in a background job.
+These declarations tell Active Storage that a User can have an avatar image and a profile banner attached. Active Storage records each attachment in the tables we created with `active_storage:install`, so it doesn't read or write the `avatar_image` and `profile_banner` string columns on `users`. The `dependent: :purge_later` option means that when a user is deleted, their attached images will be automatically cleaned up in a background job.
 
 ### The association
 
@@ -581,7 +581,7 @@ Add the callback and method at the end of the class:
     avatar_image.attach(
       io: URI.open(image),
       filename: image.split("/").last,
-      content_type: "image/jpg"
+      content_type: "image/png"
     )
   end
 end

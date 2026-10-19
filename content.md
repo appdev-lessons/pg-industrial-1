@@ -25,10 +25,10 @@ This is like finishing school. We're going to learn how to level up to write a c
 
 Launch the codespace for your project and start the live preview with `bin/dev`. You'll see we're starting from scratch.
 
-<aside>
+<div class="alert alert-info">
 
-So far, we've started the live preview with `bin/server`. From this lesson on, we'll use `bin/dev` instead. `bin/dev` is the script that every new Rails app comes with: in this app it runs `bin/rails server`, and in apps that also have a CSS or JavaScript build step, it starts those processes too. `bin/server` is our own wrapper around `rails server`, which first clears out a server that didn't shut down cleanly. We use `bin/dev` because it's the command the Rails guides, other developers, and later lessons use. If `bin/dev` ever refuses to start with `A server is already running`, run `bin/server` once instead.
-</aside>
+<i class="fa-solid fa-circle-info"></i> From this lesson on, we'll start the live preview with `bin/dev` instead of `bin/server`. `bin/dev` comes with every new Rails app, so it's the command you'll see in the Rails guides and from other developers.
+</div>
 
 ## The data model
 

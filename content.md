@@ -27,7 +27,7 @@ Launch the codespace for your project and start the live preview with `bin/dev`.
 
 <div class="alert alert-info">
 
-<i class="fa-solid fa-circle-info"></i> From this lesson on, we'll start the live preview with `bin/dev` instead of `bin/server`. `bin/dev` comes with every new Rails app, so it's the command you'll see in the Rails guides and from other developers.
+<i class="fa-solid fa-circle-info"></i> As in [ToDo List, Part 1](/lessons/846-todo-list-1), we start the live preview with `bin/dev` instead of `bin/server`. `bin/dev` comes with every new Rails app, so it's the command you'll see in the Rails guides and from other developers.
 </div>
 
 ## The data model

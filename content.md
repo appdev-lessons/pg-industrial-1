@@ -42,7 +42,7 @@ Importantly, there's the `FollowRequest` table, which keeps track of who's follo
 
 ## Git workflow
 
-We're going to practice the [professional Git workflow](/lessons/196-git-cli) of creating branches, committing to them, opening pull requests, and merging. That way, we can leave feedback in the form of comments on your pull requests, with line-by-line comments on your actual code before any commit hits `main`.
+We're going to practice the professional Git workflow of creating branches, committing to them, opening pull requests, and merging. (If you haven't done it yet, [The Pull Request Workflow](/lessons/936-pull-request-workflow) walks through every step, and [Command-Line Git Basics](/lessons/196-git-cli) covers the commands.) That way, we can leave feedback in the form of comments on your pull requests, with line-by-line comments on your actual code before any commit hits `main`.
 
 <div class="alert alert-info">
 
@@ -863,7 +863,7 @@ github.com/[YOUR_GITHUB_USERNAME]/pg-industrial/pull/X
 It should _not_ contain `appdev-projects` in the URL. If it does, you submitted a PR to _our_ repo instead of to _your own fork_.
 
 <aside>
-You don't need to merge your branches now, but when you're ready: [see the notes in our Git CLI lesson](/lessons/196-git-cli#merging-branches).
+You don't need to merge your branches now, but when you're ready: [see Step 6 of The Pull Request Workflow](/lessons/936-pull-request-workflow#step-6-squash-and-merge-to-main).
 </aside>
 
 Submit your pull request URL:

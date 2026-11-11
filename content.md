@@ -606,7 +606,7 @@ git commit -m "Configured ApplicationRecord and User model"
 Now let's generate the Photos resource. Since users will be creating, viewing, editing, and deleting photos, we want a full scaffold. Use the copy button to avoid typos here:
 
 ```bash{1:(50-65)}
-rails generate scaffold Photo image caption:text owner:references pinned:boolean comments_count:integer likes_count:integer
+rails generate scaffold Photo image caption:text owner:references comments_count:integer likes_count:integer
 ```
 {: copyable }
 
@@ -649,7 +649,7 @@ The generator created:
       # ...
       t.text :caption
       t.references :owner, null: false, foreign_key: true
-      t.boolean :pinned
+      t.integer :comments_count
       # ...
 ```
 {: filename="db/migrate/<date-time-of-migration>_create_photos.rb" }
@@ -660,7 +660,7 @@ But `foreign_key: true` tells the database to look for a table called `owners`, 
       # ...
       t.text :caption
       t.belongs_to :owner, null: false, foreign_key: { to_table: :users }
-      t.boolean :pinned
+      t.integer :comments_count
       # ...
 ```
 {: filename="db/migrate/<date-time-of-migration>_create_photos.rb" }
@@ -673,10 +673,9 @@ But `foreign_key: true` tells the database to look for a table called `owners`, 
 
 Just like with the Users migration, we set sensible defaults:
 
-```ruby{3:(24-52),4:(32-43),5:(29-40)}
+```ruby{3:(32-43),4:(29-40)}
       # ...
       t.belongs_to :owner, null: false, foreign_key: { to_table: :users }
-      t.boolean :pinned, default: false, null: false
       t.integer :comments_count, default: 0
       t.integer :likes_count, default: 0
 
@@ -685,7 +684,7 @@ Just like with the Users migration, we set sensible defaults:
 ```
 {: filename="db/migrate/<date-time-of-migration>_create_photos.rb" }
 
-New photos start unpinned (`false`) and with zero likes and comments.
+New photos start with zero likes and comments.
 
 Now we're ready to migrate:
 
@@ -763,20 +762,22 @@ Every photo must have a caption and an image.
 
 ### Scopes
 
-Add three [scopes](https://guides.rubyonrails.org/active_record_querying.html#scopes) for ordering and filtering:
+Add a [scope](https://guides.rubyonrails.org/active_record_querying.html#scopes) for ordering:
 
-```ruby{4-6}
+```ruby{4}
   # ...
   validates :image, presence: true
 
   scope :latest, -> { order(created_at: :desc) }
-  scope :pinned, -> { where(pinned: true) }
-  scope :unpinned, -> { where(pinned: false) }
 end
 ```
 {: filename="app/models/photo.rb" }
 
-Scopes are named queries that you can chain. Instead of writing `Photo.where(pinned: true).order(created_at: :desc)` everywhere, we can write `Photo.pinned.latest`. They make our code more readable and keep query logic in the model where it belongs.
+Scopes are named queries that you can chain. Instead of writing `.order(created_at: :desc)` everywhere that we want the newest photos first, we can write `Photo.latest`, or `user.own_photos.latest`. They make our code more readable and keep query logic in the model where it belongs.
+
+<aside>
+A scope can hold any query, not only an ordering. If photos had a `pinned` boolean column, for example, `scope :pinned, -> { where(pinned: true) }` would let us write `Photo.pinned.latest` for the pinned photos, newest first.
+</aside>
 
 Now would be a good time for a commit:
 
@@ -796,7 +797,7 @@ At this point, you should have:
 5. A `users` table with citext columns, defaults, and indexes.
 6. A `photos` table with proper foreign key, defaults, and indexes.
 7. A full `photos` scaffold including a controller and view templates folder.
-8. User and Photo models with associations, validations, and scopes.
+8. User and Photo models with associations, validations, and a scope.
 
 We'll need to make some more progress on the database and backend setup before we can begin working on the frontend.
 

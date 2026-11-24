@@ -95,15 +95,15 @@ gem "ransack"                         # Search and filtering
 Why outside of any group? Gems in the `:development` group are only loaded while developing, like `better_errors` for debugging. We don't want those in production because they waste memory. But gems like `devise` and `cloudinary` need to work everywhere: development, test, _and_ production. That's why they go outside any group block.
 </aside>
 
-Here's a quick check on where a gem belongs.
+Let's try that reasoning on a different gem.
 
 - Where in the `Gemfile` should a payment gem like `stripe` go, if the live app uses it to charge cards?
 - Inside `group :development do`
   - Not quite. Gems in that group aren't loaded in production, where the charges happen.
 - Inside `group :test do`
-  - Not quite. Gems in that group are only loaded while the tests run.
+  - Gems in that group are only loaded while the tests run, so the live app wouldn't have it.
 - Outside any `group` block
-  - Yes! Gems outside every group are loaded in all environments, production included.
+  - Yes! A gem outside every group is loaded in all environments, and production is where the cards are charged.
 {: .choose_best #gems_outside_group title="Gems outside a group" points="1" answer="3" }
 
 Now install them:
@@ -381,11 +381,11 @@ Let's check how a `citext` column compares values.
 
 - A `subscribers` table stores `email` as `citext`, and one row holds `bob@example.com`. Does `Subscriber.find_by(email: "Bob@Example.com")` find that row?
 - No, the case has to match
-  - Not quite. That's how a plain `string` column compares values.
+  - Not quite. That's how a `string` column compares values, and this column is `citext`.
 - Yes
-  - Yes! A `citext` column compares values without regard to case.
+  - Right! A `citext` column compares values without regard to case, so `Bob@Example.com` matches `bob@example.com`.
 - Only if we call `.downcase` on the argument first
-  - Not quite. With `citext`, the database ignores case for us.
+  - Almost. That's what we'd have to do with a `string` column. With `citext`, the database does the case-insensitive comparison for us.
 {: .choose_best #citext_lookup title="citext lookups" points="1" answer="2" }
 
 ### Preventing blank usernames
@@ -624,17 +624,17 @@ git add -A
 git commit -m "Generated Photos scaffold"
 ```
 
-Before we edit the migration, here's a check on what `references` produces.
+Before we edit the migration, let's make sure it's clear what `references` gives us.
 
 - Which column does `rails generate model Review book:references` add to the `reviews` table?
 - `book_id`
-  - Yes! `references` names the column after the association, plus `_id`.
+  - Yes! The column is named after the association, `book`, with `_id` added to the end.
 - `book`
-  - Not quite. The column holds the book's ID, so its name ends in `_id`.
+  - Close! The column holds the ID of a book, not the book itself, so its name ends in `_id`.
 - `books_id`
-  - Not quite. The association name is singular, so the column is too.
+  - Not quite. A review belongs to one book, so the association name is singular, and so is the column.
 - `reference_id`
-  - Not quite. `references` is the column type; the name comes from `book`.
+  - `references` is the type of the column, like `string` or `integer`. The name comes from the word before the colon.
 {: .choose_best #references_column title="The references column" points="1" answer="1" }
 
 ## Editing the Photos migration
@@ -733,15 +733,15 @@ end
 
 We specify `class_name: "User"` because the association name `owner` doesn't match the model name `User`. The `counter_cache: true` option keeps a running count: every time a photo is created or destroyed, Rails will automatically increment or decrement the `photos_count` column on the associated User. This means we can display "42 photos" on a user's profile without running a `COUNT(*)` query every time.
 
-Here's a check on where that count lives.
+Let's try that with a different pair of models.
 
 - If `Comment` has `belongs_to :article, counter_cache: true`, which column does Rails keep up to date?
 - `articles_count` on `comments`
-  - Not quite. The count lives on the parent record, the article.
+  - Not quite. Each comment belongs to one article, so there's nothing to count on `comments`. The count is stored on the parent.
 - `count` on `articles`
-  - Not quite. Rails names the column after the child table, plus `_count`.
+  - Close! It's the right table, but Rails looks for a column named after the child table, with `_count` on the end.
 - `comments_count` on `articles`
-  - Yes! That's why we gave `users` a `photos_count` column.
+  - Exactly. The count is stored on the parent, in a column named after the child table. That's why we gave `users` a `photos_count` column.
 {: .choose_best #counter_cache_column title="The counter cache column" points="1" answer="3" }
 
 ### Validations
